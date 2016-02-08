@@ -18,9 +18,9 @@ namespace Halso_Hub
 {
 	public partial class ActivityMain : Form
 	{
-		private int timeLeft;
-        private ArrayList activityList;
-		private Activity currentActivity;
+		private int timeLeft { get; set; }
+        private List<Activity> activityList { get; set; }
+		private Activity currentActivity { get; set; }
 
 		/// <summary>
 		/// Initialize all components in application window.
@@ -30,7 +30,7 @@ namespace Halso_Hub
 			InitializeComponent();
             timeLeft = 0;
 			timer.Stop();
-            activityList = new ArrayList();
+            activityList = new List<Activity>();
             activityList.Add(new Activity("Yoga", "Gör yoga i 10 sekunder.", 5, 10, null)); //Temp activity for testing
             activityList.Add(new Activity("Kaffe", "Drick en kopp kaffe.", 3, 15, null)); //Temp activity for testing
             listActivities(activityList);
@@ -55,20 +55,6 @@ namespace Halso_Hub
 			}
 		}
 
-        /// <summary>
-        /// Set a new time for the clock to count down from.
-        /// </summary>
-        /// <param name="time"> The time in seconds to count down from. </param>
-		private void setTimeLeft(int time)
-		{
-			if (time > 0)
-			{
-                timer.Stop();
-                timeLeft = time;
-                timerText.Text = String.Format("{0:00} min {1:00} sec", timeLeft / 60, timeLeft % 60);
-                timer.Start();
-			}
-		}
 
 		/// <summary>
 		/// Show the info of the current activity selected
@@ -94,7 +80,7 @@ namespace Halso_Hub
         /// Lists based on the mood of the person, suitable activities in a selectable list.
         /// </summary>
         /// <param name="activities">A list of suitable activities made from algorithm</param>
-        private void listActivities(ArrayList activities)
+        private void listActivities(List<Activity> activities)
         {
             activitiesListbox.Items.Clear();
 
