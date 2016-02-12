@@ -13,7 +13,8 @@ namespace Halso_Hub
 		Terrible,
 		Bad,
 		Good,
-		Superb
+		Superb,
+        Skipped
 	}
 
 	/// <summary>

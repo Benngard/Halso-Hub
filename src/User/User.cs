@@ -10,7 +10,7 @@ namespace Halso_Hub
 	/// <summary>
 	/// Is a user of the application.
 	/// </summary>
-    class User
+    class User : IUser
     {
 		public string Username { get; private set; }
 		
@@ -40,8 +40,16 @@ namespace Halso_Hub
 		/// <param name="moodType">Which MoodType to add. Duplicates will not be stored.</param>
 		public void AddMood(MoodType moodType)
 		{
-			CurrentMood.Add(moodType);
+			//CurrentMood.Add(moodType);
 		}
+
+        /// <summary>
+        /// Emptys the Hashset containing the users mode
+        /// </summary>
+        public void ResetMood()
+        {
+            //CurrentMood.Clear();
+        }
 
 		/// <summary>
 		/// Gives the user a new activity to perform. Can not already be doing an activity.
@@ -50,7 +58,7 @@ namespace Halso_Hub
 		public void SetCurrentActivity(Activity newActivity)
 		{
 			// can not start a new activity before completing the old one
-			if (CurrentActivity == null)
+			if (CurrentActivity != null)
 			{
 				throw new AlreadyInActivityException("Already performing an activity.");
 			}
@@ -76,9 +84,12 @@ namespace Halso_Hub
 		{
 			var recommendedActivities = new List<Activity>();
 
-			// LEFT TO DO : ADD ACTIVITIES TO LIST
+            recommendedActivities.Add(new Activity("Yoga", "Träna Yoga! Tid: 10 sec", 5, 10, null)); //Temp activity for testing
+            recommendedActivities.Add(new Activity("Kaffe", "Drick en kopp kaffe. Tid 15 sec", 3, 15, null)); //Temp activity for testing
 
-			return recommendedActivities;
+            // LEFT TO DO : ADD ACTIVITIES TO LIST FROM DB
+
+            return recommendedActivities;
 		}
 
 		/// <summary>
@@ -203,5 +214,21 @@ namespace Halso_Hub
 		{
 			CurrentChallenge = null;
 		}
+
+        /// <summary>
+        /// Finds an activity from GetRecommendedActivities based on the Activitys name.
+        /// </summary>
+        /// <param name="name"></param> The name of the activity to be found
+        /// <returns></returns> If found return the activity, els return null
+        public Activity findRecommendedActivityByName(string name)
+        {
+            foreach (Activity a in GetRecommendedActivities())
+            {
+                if (a.Name.Equals(name)) {
+                    return a;
+                }
+            }
+            return null;
+        }
     }
 }

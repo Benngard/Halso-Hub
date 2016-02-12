@@ -102,40 +102,44 @@
 			this.moodButton4.TabIndex = 3;
 			this.moodButton4.Text = "button2";
 			this.moodButton4.UseVisualStyleBackColor = true;
-			// 
-			// moodButton3
-			// 
-			this.moodButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moodButton4.Click += new System.EventHandler(this.moodButton4_Click);
+            // 
+            // moodButton3
+            // 
+            this.moodButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.moodButton3.Location = new System.Drawing.Point(203, 3);
 			this.moodButton3.Name = "moodButton3";
 			this.moodButton3.Size = new System.Drawing.Size(94, 94);
 			this.moodButton3.TabIndex = 2;
 			this.moodButton3.Text = "button2";
 			this.moodButton3.UseVisualStyleBackColor = true;
-			// 
-			// moodButton2
-			// 
-			this.moodButton2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moodButton3.Click += new System.EventHandler(this.moodButton3_Click);
+            // 
+            // moodButton2
+            // 
+            this.moodButton2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.moodButton2.Location = new System.Drawing.Point(103, 3);
 			this.moodButton2.Name = "moodButton2";
 			this.moodButton2.Size = new System.Drawing.Size(94, 94);
 			this.moodButton2.TabIndex = 1;
 			this.moodButton2.Text = "button2";
 			this.moodButton2.UseVisualStyleBackColor = true;
-			// 
-			// moodButton1
-			// 
-			this.moodButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moodButton2.Click += new System.EventHandler(this.moodButton2_Click);
+            // 
+            // moodButton1
+            // 
+            this.moodButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.moodButton1.Location = new System.Drawing.Point(3, 3);
 			this.moodButton1.Name = "moodButton1";
 			this.moodButton1.Size = new System.Drawing.Size(94, 94);
 			this.moodButton1.TabIndex = 0;
 			this.moodButton1.Text = "button1";
 			this.moodButton1.UseVisualStyleBackColor = true;
-			// 
-			// activityDescriptionBox
-			// 
-			this.activityDescriptionBox.Location = new System.Drawing.Point(418, 41);
+            this.moodButton1.Click += new System.EventHandler(this.moodButton1_Click);
+            // 
+            // activityDescriptionBox
+            // 
+            this.activityDescriptionBox.Location = new System.Drawing.Point(418, 41);
 			this.activityDescriptionBox.Name = "activityDescriptionBox";
 			this.activityDescriptionBox.Size = new System.Drawing.Size(354, 336);
 			this.activityDescriptionBox.TabIndex = 4;

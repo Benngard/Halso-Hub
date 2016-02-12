@@ -8,9 +8,9 @@ namespace Halso_Hub
 	/// </summary>
 	public enum MoodType
 	{
-		Sad,
-		Tierd,
-		Angry,
-		Lonely
+		VerySad, Sad, Happy,
+		VeryTierd, Tired, Energetic,
+		VeryStressed, Stressed, Calm,
+		VeryLonely, Lonely, Sociable
 	}
 }

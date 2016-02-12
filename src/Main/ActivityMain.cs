@@ -16,125 +16,215 @@ using System.Collections;
 
 namespace Halso_Hub
 {
-	public partial class ActivityMain : Form
-	{
-		private int timeLeft { get; set; }
-        private List<Activity> activityList { get; set; }
-		private Activity currentActivity { get; set; }
+	partial class ActivityMain : Form, IActivityMain
+    {
+        private Presenter presenter;
 
 		/// <summary>
-		/// Initialize all components in application window.
+		/// Initialize components in application window.
 		/// </summary>
 		public ActivityMain()
 		{
 			InitializeComponent();
-            timeLeft = 0;
-			timer.Stop();
-            activityList = new List<Activity>();
-            activityList.Add(new Activity("Yoga", "Gör yoga i 10 sekunder.", 5, 10, null)); //Temp activity for testing
-            activityList.Add(new Activity("Kaffe", "Drick en kopp kaffe.", 3, 15, null)); //Temp activity for testing
-            listActivities(activityList);
+            timer.Stop();
         }
 
         /// <summary>
-        /// Clock that counts down and stops if timer reaches zero
+        /// Sets the presenter for this form
+        /// </summary>
+        /// <param name="presenter"></param> the presenter for this form
+        public void setPresenter(Presenter presenter)
+        {
+            this.presenter = presenter;
+        }
+
+        /// <summary>
+        /// Notifys the presenter that a second has passed
+        /// </summary>
+        /// <param name="sender"></param> object that sent the event
+        /// <param name="e"></param> event params (not used)
+		private void timer_Tick(object sender, EventArgs e)
+		{
+
+            presenter.timerTick();
+		}
+
+        /// <summary>
+        /// Unused.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-		private void timer_Tick(object sender, EventArgs e)
-		{
-			if (timeLeft > 0)
-			{
-                timeLeft -= 1;
-                timerText.Text = String.Format("{0:00} min {1:00} sec", timeLeft / 60, timeLeft % 60);
-            }
-			else 
-			{
-				timer.Stop();
-                activityDone();
-			}
-		}
-
-
-		/// <summary>
-		/// Show the info of the current activity selected
-		/// </summary>
-        private void showActivity()
-        {
-            activityDescriptionBox.Clear();
-            if (currentActivity == null)
-            {
-                activityDescriptionBox.AppendText("ERROR!");
-                timerText.Text = String.Format("{0:00} min {1:00} sec", 0 / 60, 0 % 60);
-            }
-            else
-            {
-                activityDescriptionBox.AppendText(currentActivity.Description);
-
-                timeLeft = currentActivity.Time;
-                timerText.Text = String.Format("{0:00} min {1:00} sec", timeLeft / 60, timeLeft % 60);
-            }
-        }
-
-        /// <summary>
-        /// Lists based on the mood of the person, suitable activities in a selectable list.
-        /// </summary>
-        /// <param name="activities">A list of suitable activities made from algorithm</param>
-        private void listActivities(List<Activity> activities)
-        {
-            activitiesListbox.Items.Clear();
-
-            foreach (Activity activity in activityList)
-            {
-                activitiesListbox.Items.Add(activity.Name);
-            }
-        }
-
-		/// <summary>
-		/// Do something when clock reaches 0
-		/// </summary>
-        private void activityDone()
-        {
-
-        }
-
 		private void timerText_Click(object sender, EventArgs e)
 		{
 
 		}
 
+        /// <summary>
+        /// Unused
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
         /// <summary>
-        /// Start the timer countdown. (Temporarily start with 20 seconds every time)
+        /// Notifys the presenter that the first mood button has been pressed
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void startButton_Click(object sender, EventArgs e)
-        {
-            activitiesListbox.Items.Clear();
-            timer.Start();
+        /// <param name="sender"></param> object that sent the event
+        /// <param name="e"></param> event params (not used)
+        private void moodButton1_Click(object sender, EventArgs e) {
+            presenter.moodButtonPressed(moodButton1.Text);
         }
 
         /// <summary>
-        /// When selecting an activity in the list of activities, the decription for that activity is shown with time.
+        /// Notifys the presenter that the second mood button has been pressed
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"></param> object that sent the event
+        /// <param name="e"></param> event params (not used)
+        private void moodButton2_Click(object sender, EventArgs e)
+        {
+            presenter.moodButtonPressed(moodButton2.Text);
+        }
+
+        /// <summary>
+        /// Notifys the presenter that the third mood button has been pressed
+        /// </summary>
+        /// <param name="sender"></param> object that sent the event
+        /// <param name="e"></param> event params (not used)
+        private void moodButton3_Click(object sender, EventArgs e)
+        {
+            presenter.moodButtonPressed(moodButton3.Text);
+        }
+
+        /// <summary>
+        /// Notifys the presenter that the forth mood button has been pressed
+        /// </summary>
+        /// <param name="sender"></param> object that sent the event
+        /// <param name="e"></param> event params (not used)
+        private void moodButton4_Click(object sender, EventArgs e)
+        {
+            presenter.moodButtonPressed(moodButton4.Text);
+        }
+
+        /// <summary>
+        /// Notifys the presenter that the start button has been pressed
+        /// </summary>
+        /// <param name="sender"></param> object that sent the event
+        /// <param name="e"></param> event params (not used)
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            presenter.startButtonPressed();
+        }
+
+        /// <summary>
+        /// Handles indexing of the activity list and forwards the last pressed activity to the presenter
+        /// </summary>
+        /// <param name="sender"></param> Object that sent the event
+        /// <param name="e"></param> Event params (not used)
         private void activitiesList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Get the currently selected item in the ListBox.
+
             string curItem = activitiesListbox.SelectedItem.ToString();
-
-			// Get index of string in.
 			int index = activitiesListbox.FindString(curItem);
-			currentActivity = (Activity)activityList[index];
 
-			showActivity();
-            
+            presenter.activityPressed(curItem);
+        }
+
+        /// <summary>
+        /// Updates the four mood button's and the title's text
+        /// </summary>
+        /// <param name="one"></param> Text for button 1
+        /// <param name="two"></param> Text for button 2
+        /// <param name="three"></param> Text for button 3
+        /// <param name="four"></param> Text for button 4
+        /// <param name="title"></param> Text for title
+        public void updateMoodButtons(string one, string two, string three, string four, string title)
+        {
+            moodButton1.Text = one;
+            moodButton2.Text = two;
+            moodButton3.Text = three;
+            moodButton4.Text = four;
+            moodLabel.Text = title;
+        }
+
+        /// <summary>
+        /// Sets the four mood buttons to visible
+        /// </summary>
+        public void showAllMoodButtons()
+        {
+            moodButton1.Visible = true;
+            moodButton2.Visible = true;
+            moodButton3.Visible = true;
+            moodButton4.Visible = true;
+        }
+
+        /// <summary>
+        /// Sets moodButton1 to visible, the other three to invisible
+        /// </summary>
+        public void showOneMoodButton()
+        {
+            moodButton1.Visible = true;
+            moodButton2.Visible = false;
+            moodButton3.Visible = false;
+            moodButton4.Visible = false;
+        }
+
+        /// <summary>
+        /// Updates the activitiesListBox with the recommended activities.
+        /// </summary>
+        /// <param name="activities"></param> List with the recommended activities.
+        public void updateActivityList(List<string> activities)
+        {
+            activitiesListbox.Items.Clear();
+
+            foreach (string s in activities)
+            {
+                activitiesListbox.Items.Add(s);
+            }
+        }
+
+        /// <summary>
+        /// Updates the activityDescriptionBox with information about the selected activity.
+        /// </summary>
+        /// <param name="description"></param> Information about the selected activity.
+        public void updateActivityInfo(string description)
+        {
+            activityDescriptionBox.Clear();
+            activityDescriptionBox.AppendText(description);
+        }
+
+        /// <summary>
+        /// Sets the timer and it's text to visible and updates the text with param and then starts the timer
+        /// </summary>
+        /// <param name="time"></param> time to be displayed
+        public void setupTimer(string time)
+        {
+            activitiesListbox.Items.Clear();
+            timerText.Text = time;
+            timerText.Visible = true;
+            timeLeftText.Visible = true;
+            timer.Start();
+
+        }
+
+        /// <summary>
+        /// Updates the text of the timer with param
+        /// </summary>
+        /// <param name="time"></param> time to be displayed
+        public void updateTimer(string time)
+        {
+            timerText.Text = time;
+        }
+
+        /// <summary>
+        /// Hides the timer
+        /// </summary>
+        public void hideTimer()
+        {
+            timerText.Visible = false;
+            timeLeftText.Visible = false;
         }
     }
 }

@@ -21,7 +21,10 @@ namespace Halso_Hub
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new ActivityMain());
+            ActivityMain ActivityMain = new ActivityMain();
+            User user = new User("testUser");
+            Presenter presenter = new Presenter(ActivityMain, user);
+			Application.Run(ActivityMain);
 		}
 	}
 }
