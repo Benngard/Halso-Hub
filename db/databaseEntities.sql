@@ -13,6 +13,18 @@ CREATE TABLE Mood
 	PRIMARY KEY (Type)
 );
 
+CREATE TABLE CurrentMood
+(
+	Type			varchar(255)	NOT NULL,
+	PRIMARY KEY (Type)
+);
+
+CREATE TABLE CurrentMood
+(
+	Type			varchar(255)	NOT NULL,
+	PRIMARY KEY (Type)
+);
+
 CREATE TABLE Trophy
 (
 	Name			varchar(255)	NOT NULL,
