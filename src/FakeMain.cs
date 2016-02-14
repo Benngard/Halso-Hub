@@ -16,15 +16,21 @@ namespace Halso_Hub
     /// <summary>
     /// Used for starting another executable program.
     /// </summary>
-    public class FakeMain
+    public partial class FakeMain : Form
     {
         public string User { get; private set; }
 
         public FakeMain(string user)
         {
             User = user;
+            InitializeComponent();
+            this.button1.Text = "CLICK ME";
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            executeProgram("" + user);
+        }
         /// <summary>
         /// Method for starting an executable program.
         /// </summary>
