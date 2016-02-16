@@ -37,7 +37,10 @@ namespace Halso_Hub
         /// <param name="user"></param>string representing a user in the database
         public void executeProgram(string user)
         {
-            System.Diagnostics.Process.Start("firefox.exe");
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"C:\Users\Ola\Documents\Visual Studio 2015\Projects\HälsoHubTestWORKING\HälsoHubTest\bin\Debug\HälsoHubTest";
+            startInfo.Arguments = "" + user;
+            Process.Start(startInfo);
         }
     }
 }

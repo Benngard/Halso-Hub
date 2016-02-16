@@ -13,13 +13,14 @@ namespace Halso_Hub
 {
 	static class Program
 	{
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static void Main()
-		{
-			Application.EnableVisualStyles();
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            MessageBox.Show("" + args[0]);
+            Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
             ActivityMain ActivityMain = new ActivityMain();
             User user = new User("testUser");
