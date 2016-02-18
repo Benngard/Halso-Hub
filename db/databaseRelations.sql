@@ -1,4 +1,4 @@
-﻿CREATE TABLE GoodFor
+CREATE TABLE `halso_hub`.`GoodFor`
 (
 	moodType			varchar(255)	NOT NULL,
 	activityName		varchar(255)	NOT NULL,
@@ -7,7 +7,7 @@
 	FOREIGN KEY (activityName) REFERENCES Activity(name)
 );
 
-CREATE TABLE ActivityCompleted
+CREATE TABLE `halso_hub`.ActivityCompleted
 (
 	userName			varchar(255)	NOT NULL,
 	activityName		varchar(255)	NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE ActivityCompleted
 	FOREIGN KEY (activityName) REFERENCES Activity(name)
 );
 
-CREATE TABLE OnGoingActivity
+CREATE TABLE `halso_hub`.OnGoingActivity
 (
 	userName			varchar(255)	NOT NULL,
 	activityName		varchar(255)	NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE OnGoingActivity
 	FOREIGN KEY (activityName) REFERENCES Activity(name)
 );
 
-CREATE TABLE ActivityRewards
+CREATE TABLE `halso_hub`.ActivityRewards
 (
 	trophyName			varchar(255)	NOT NULL,
 	activityName		varchar(255)	NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE ActivityRewards
 	FOREIGN KEY (activityName) REFERENCES Activity(name)
 );
 
-CREATE TABLE ChallengeRequires
+CREATE TABLE `halso_hub`.ChallengeRequires
 (
 	challengeName			varchar(255)	NOT NULL,
 	activityName		varchar(255)	NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE ChallengeRequires
 	FOREIGN KEY (activityName) REFERENCES Activity(name)
 );
 
-CREATE TABLE EarnedTrophy
+CREATE TABLE `halso_hub`.EarnedTrophy
 (
 	userName			varchar(255)	NOT NULL,
 	trophyName		varchar(255)	NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE EarnedTrophy
 	FOREIGN KEY (trophyName) REFERENCES Trophy(name)
 );
 
-CREATE TABLE UserMood
+CREATE TABLE `halso_hub`.UserMood
 (
 	userName			varchar(255)	NOT NULL,
 	currentMoodType		varchar(255)	NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE UserMood
 	FOREIGN KEY (currentMoodType) REFERENCES CurrentMood(type)
 );
 
-CREATE TABLE ChallengeRewards
+CREATE TABLE `halso_hub`.ChallengeRewards
 (
 	trophyName			varchar(255)	NOT NULL,
 	challengeName		varchar(255)	NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE ChallengeRewards
 	FOREIGN KEY (challengeName) REFERENCES Challenge(name)
 );
 
-CREATE TABLE OnGoingChallenge
+CREATE TABLE `halso_hub`.OnGoingChallenge
 (
 	userName			varchar(255)	NOT NULL,
 	challengeName		varchar(255)	NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE OnGoingChallenge
 	FOREIGN KEY (challengeName) REFERENCES Challenge(name)
 );
 
-CREATE TABLE ChallengeCompleted
+CREATE TABLE `halso_hub`.ChallengeCompleted
 (
 	userName			varchar(255)	NOT NULL,
 	challengeName		varchar(255)	NOT NULL,

@@ -1,4 +1,4 @@
-﻿CREATE TABLE Activity
+CREATE TABLE `halso_hub`.Activity
 (
 	Name			varchar(255) 	NOT NULL,
 	Description		text,
@@ -7,25 +7,19 @@
 	PRIMARY KEY (Name)
 );
 
-CREATE TABLE Mood
+CREATE TABLE `halso_hub`.Mood
 (
 	Type			varchar(255)	NOT NULL,
 	PRIMARY KEY (Type)
 );
 
-CREATE TABLE CurrentMood
+CREATE TABLE `halso_hub`.CurrentMood
 (
 	Type			varchar(255)	NOT NULL,
 	PRIMARY KEY (Type)
 );
 
-CREATE TABLE CurrentMood
-(
-	Type			varchar(255)	NOT NULL,
-	PRIMARY KEY (Type)
-);
-
-CREATE TABLE Trophy
+CREATE TABLE `halso_hub`.Trophy
 (
 	Name			varchar(255)	NOT NULL,
 	Description		text,
@@ -34,13 +28,13 @@ CREATE TABLE Trophy
 	CHECK (Quality='Bronze' OR Quality='Silver' OR Quality='Gold')
 );
 
-CREATE TABLE User
+CREATE TABLE `halso_hub`.User
 (
 	Name			varchar(255)	NOT NULL,
 	PRIMARY KEY (Name)
 );
 
-CREATE TABLE Challenge
+CREATE TABLE `halso_hub`.Challenge
 (
 	Name			varchar(255)	NOT NULL,
 	Description		text,

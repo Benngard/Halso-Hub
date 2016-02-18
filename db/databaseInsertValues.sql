@@ -1,6 +1,5 @@
-﻿/* databaseEntities
-------------------------------------*/
-/* USERS */
+
+
 INSERT INTO User 
 VALUES ('Ola');
 
@@ -9,6 +8,9 @@ VALUES ('Mattias');
 
 INSERT INTO User 
 VALUES ('Johan');
+
+INSERT INTO user
+VALUES ('Daniel');
 
 /* MOOD */
 INSERT INTO Mood 
@@ -47,10 +49,10 @@ INSERT INTO Trophy
 VALUES ('Strength of an oxe','Complete Pushups and Situps to earn this trophy!','Gold');
 
 INSERT INTO Trophy
-VALUES ('Limbo master','Go as low as you can and earn this trophy!','Bronze')
+VALUES ('Limbo master','Go as low as you can and earn this trophy!','Bronze');
 
 INSERT INTO Trophy
-VALUES ('Training deluxe','You must love to exercise!','Gold')
+VALUES ('Training deluxe','You must love to exercise!','Gold');
 
 /* CHALLENGE */
 INSERT INTO Challenge
@@ -73,14 +75,14 @@ INSERT INTO GoodFor
 VALUES ('Bored','Situps');
 
 INSERT INTO GoodFor
-VALUES ('Square','Limbo')
+VALUES ('Square','Limbo');
 
 /* ACTIVITYCOMPLETED */
 INSERT INTO ActivityCompleted
 VALUES ('Ola','Pushups');
 
 INSERT INTO ActivityCompleted
-VALUES ('Ola','Situps')
+VALUES ('Ola','Situps');
 
 INSERT INTO ActivityCompleted
 VALUES ('Ola','Limbo');
@@ -97,10 +99,10 @@ VALUES ('Johan','Limbo');
 
 /* ACTIVITYREWARDS */
 INSERT INTO ActivityRewards
-VALUES ('Strength of an ox','Pushups')
+VALUES ('Strength of an oxe','Pushups');
 
 INSERT INTO ActivityRewards
-VALUES ('Strength of an ox','Situps')
+VALUES ('Strength of an oxe','Situps');
 
 INSERT INTO ActivityRewards
 VALUES ('Limbo master','Limbo');
@@ -120,7 +122,7 @@ VALUES ('Flexibility & Strength','Situps');
 
 /* EARNEDTROPHY */
 INSERT INTO EarnedTrophy
-VALUES ('Ola','Strength of an ox');
+VALUES ('Ola','Strength of an oxe');
 
 INSERT INTO EarnedTrophy
 VALUES ('Johan','Cat lover');
@@ -141,7 +143,7 @@ VALUES ('Training deluxe','Flexibility & Strength');
 
 /* ONGOINGCHALLENGE */
 INSERT INTO OnGoingChallenge
-VALUES ('Mattias','Flexibility & Strength')
+VALUES ('Mattias','Flexibility & Strengthuser');
 
 /* CHALLENGECOMPLETED */
 INSERT INTO ChallengeCompleted
