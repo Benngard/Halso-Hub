@@ -1,0 +1,17 @@
+DROP TABLE 
+	`halso_hub`.`activity`, 
+	`halso_hub`.`activitycompleted`, 
+    `halso_hub`.`activityrewards`, 
+    `halso_hub`.`challenge`, 
+    `halso_hub`.`challengecompleted`, 
+    `halso_hub`.`challengerequires`, 
+    `halso_hub`.`challengerewards`, 
+    `halso_hub`.`currentmood`, 
+    `halso_hub`.`earnedtrophy`, 
+    `halso_hub`.`goodfor`, 
+    `halso_hub`.`mood`, 
+    `halso_hub`.`ongoingactivity`, 
+    `halso_hub`.`ongoingchallenge`, 
+    `halso_hub`.`trophy`, 
+    `halso_hub`.`user`, 
+    `halso_hub`.`usermood`;
