@@ -17,6 +17,7 @@ namespace Halso_Hub
         private IActivityMain view;
 
         private string activitySelected;
+        public bool challengeSelected;
 
         private int moodButtonState;
         private int timeLeft;
@@ -147,20 +148,62 @@ namespace Halso_Hub
         }
 
         /// <summary>
+        /// Called when a user selects a challenge in the GUI.
+        /// </summary>
+        /// <param name="challengeName"></param>A string representing the choosen challenge.
+        public void challengePressed(string challengeName)
+        {
+            currentChallengeHover = challengeName;
+            Challenge tmp = user.findRecommendedActivityForChallenge(challengeName);
+            if (tmp != null)
+            {
+                string description = tmp.Description;
+                if (description != null)
+                {
+                    view.updateChallengeInfo(description);
+                }
+            }
+
+        }
+
+        /// <summary>
         /// Called when the user starts an activity in the GUI.
         /// Loads the activity in user and starts the activity with its validation method.
         /// Potential TO-DO: Add exception handler, more validation methods.
         /// </summary>
         /// <param name="activity"></param>
-        public void startButtonPressed()
+        public void startButtonPressed(Button b, Label labelDescription, Label l)
         {
-            Activity startedActivity = user.findRecommendedActivityByName(currentActivityHover);
-
-            if (startedActivity != null)
+            if (b.Text == "Challenge" || user.CurrentChallenge != null)
             {
-                user.SetCurrentActivity(startedActivity);
-                timeLeft = user.CurrentActivity.TimeLeft;
-                setupAndStartTimer();
+                Activity startedActivity = user.findRecommendedActivityByName(currentActivityHover);
+
+                if (startedActivity != null)
+                {
+                    user.SetCurrentActivity(startedActivity);
+                    timeLeft = user.CurrentActivity.TimeLeft;
+                    setupAndStartTimer();
+                    activitySelected = true;
+                }
+            }
+            else
+            {
+                Challenge startedChallenge = user.findRecommendedActivityForChallenge(currentChallengeHover);
+
+                if (startedChallenge != null)
+                {
+                    user.SetCurrentChallenge(startedChallenge);
+                    challengeSelected = true;
+                }
+
+                var recommendedActivities = new List<string>();
+                foreach (Activity a in startedChallenge.Requirements)
+                {
+                    recommendedActivities.Add(a.Name);
+                }
+                view.updateActivityList(recommendedActivities);
+                labelDescription.Text = "Description";
+                l.Text = "Activities for challenge";
             }
         }
 
@@ -238,5 +281,50 @@ namespace Halso_Hub
             // Call function for displaying trophys earned, then call to check if challange is completed etc...
         }
 
+        /// <summary>
+        /// Change between challenge and activity 
+        /// </summary>
+        public void changeBetweenChallengeAndActivity(Button b, Label labelDescription, Label l, ListBox lb)
+        {
+            if (b.Text == "Challenge")
+            {
+                b.Text = "Activity";
+                labelDescription.Text = "Challenge Description";
+                l.Text = "Challenges";
+
+                lb.Items.Clear();
+
+                var recommendedChallenges = new List<string>();
+                foreach (Challenge c in user.GetRecommendedChallenges())
+                {
+                    recommendedChallenges.Add(c.Name);
+                }
+                view.updateActivityList(recommendedChallenges);
+            }
+            else {
+                b.Text = "Challenge";
+                labelDescription.Text = "Activity Description";
+                l.Text = "Activities";
+                lb.Items.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Drops the activity for user.
+        /// </summary>
+        public void dropActivity()
+        {
+            user.DropCurrentActivity();
+            activitySelected = false;
+        }
+
+        /// <summary>
+        /// Checks if CurrentActivity is null.
+        /// </summary>
+        /// <returns></returns>Returns true if CurrentActivity is null, otherwise false.
+        public bool currentActivity()
+        {
+            return user.CurrentActivity == null ? true : false;
+        }
     }
 }

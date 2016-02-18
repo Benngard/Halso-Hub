@@ -22,6 +22,9 @@ namespace Halso_Hub
         void updateActivityList(List<string> activities);
         void updateActivityInfo(string description);
 
+        void updateChallengeList(List<string> challenges);
+        void updateChallengeInfo(string description);
+
         void setupTimer(string time);
         void updateTimer(string time);
         void hideAndStopTimer();

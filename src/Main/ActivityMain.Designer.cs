@@ -45,10 +45,11 @@
 			this.moodLabel = new System.Windows.Forms.Label();
 			this.moodButtonLayout.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// timer
-			// 
-			this.timer.Enabled = true;
+            this.button1 = new System.Windows.Forms.Button();
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
 			this.timer.Interval = 1000;
 			this.timer.Tick += new System.EventHandler(this.timer_Tick);
 			// 
@@ -155,10 +156,20 @@
 			this.startButton.Text = "Start";
 			this.startButton.UseVisualStyleBackColor = true;
 			this.startButton.Click += new System.EventHandler(this.startButton_Click);
-			// 
-			// activityDecriptionLabel
-			// 
-			this.activityDecriptionLabel.AutoSize = true;
+            // 
+            // challengeButton
+            // 
+            this.button1.Location = new System.Drawing.Point(315, 383);
+            this.button1.Name = "challengeButton";
+            this.button1.Size = new System.Drawing.Size(94, 66);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Challenge";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.challengeButton_Click);
+            // 
+            // activityDecriptionLabel
+            // 
+            this.activityDecriptionLabel.AutoSize = true;
 			this.activityDecriptionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.activityDecriptionLabel.Location = new System.Drawing.Point(498, 9);
 			this.activityDecriptionLabel.Name = "activityDecriptionLabel";

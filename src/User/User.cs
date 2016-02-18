@@ -92,13 +92,29 @@ namespace Halso_Hub
             return recommendedActivities;
 		}
 
-		/// <summary>
-		/// Invokes CompleteActivity with CurrentActivity as activity.
-		/// </summary>
-		/// <param name="grade">What grade the user gives the activity.</param>
-		/// <param name="comment">Any feedback the user leaves to the activity. Can be left blank or nulled.</param>
-		/// <returns>A list of all trophies that was earned. If no trophies have been earned then an empty list of trophies.</returns>
-		public List<Trophy> CompleteCurrentActivity(ActivityGrade grade, String comment)
+        /// <summary>
+        /// Gets all challenges
+        /// </summary>
+        /// <returns></returns>A List of Challenges.
+        public List<Challenge> GetRecommendedChallenges()
+        {
+            var recommendedChallenges = new List<Challenge>();
+
+            recommendedChallenges.Add(new Challenge("Fitness Guru", "Yoga and push ups. ", new Time(13, 00, 00), new Time(17, 00, 00), GetRecommendedActivities())); //Temp challenge for testing
+            recommendedChallenges.Add(new Challenge("Drinking Master", "Drink as much as possible.", new Time(13, 00, 00), new Time(17, 00, 00), GetRecommendedActivities())); //Temp challenge for testing
+
+            // LEFT TO DO : ADD CHALLENGES TO LIST FROM DB
+
+            return recommendedChallenges;
+        }
+
+        /// <summary>
+        /// Invokes CompleteActivity with CurrentActivity as activity.
+        /// </summary>
+        /// <param name="grade">What grade the user gives the activity.</param>
+        /// <param name="comment">Any feedback the user leaves to the activity. Can be left blank or nulled.</param>
+        /// <returns>A list of all trophies that was earned. If no trophies have been earned then an empty list of trophies.</returns>
+        public List<Trophy> CompleteCurrentActivity(ActivityGrade grade, String comment)
 		{
 			var trophies = CompleteActivity(CurrentActivity, grade, comment);
 			CurrentActivity = null;
@@ -219,13 +235,30 @@ namespace Halso_Hub
         /// Finds an activity from GetRecommendedActivities based on the Activitys name.
         /// </summary>
         /// <param name="name"></param> The name of the activity to be found
-        /// <returns></returns> If found return the activity, els return null
+        /// <returns></returns> If found return the activity, else return null
         public Activity findRecommendedActivityByName(string name)
         {
             foreach (Activity a in GetRecommendedActivities())
             {
                 if (a.Name.Equals(name)) {
                     return a;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Finds an challenge from GetRecommendedChallenges based on the Challenges name.
+        /// </summary>
+        /// <param name="name"></param>The name of the challenge to be found 
+        /// <returns></returns>If found return the challenge, else return null
+        public Challenge findRecommendedActivityForChallenge(string name)
+        {
+            foreach (Challenge c in GetRecommendedChallenges())
+            {
+                if (c.Name.Equals(name))
+                {
+                    return c;
                 }
             }
             return null;

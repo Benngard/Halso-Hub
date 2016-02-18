@@ -20,6 +20,7 @@ namespace Halso_Hub
         List<Trophy> Trophies { get; }
         CurrentChallenge CurrentChallenge { get; }
         List<Challenge> CompletedChallenges { get; }
+        List<Challenge> GetRecommendedChallenges();
 
         void AddMood(MoodType moodType);
         void ResetMood();
@@ -35,5 +36,6 @@ namespace Halso_Hub
         void CompleteCurrentChallenge();
         void FailCurrentChallenge();
         Activity findRecommendedActivityByName(string name);
+        Challenge findRecommendedActivityForChallenge(string name);
     }
 }

@@ -116,7 +116,21 @@ namespace Halso_Hub
         /// <param name="e"></param> event params (not used)
         private void startButton_Click(object sender, EventArgs e)
         {
-            presenter.startButtonPressed();
+            if (!presenter.activitySelected)
+            {
+                presenter.startButtonPressed(button1, activityDecriptionLabel, activitiesLabel);
+            }
+            changeNameOnStartButton();
+        }
+
+        /// <summary>
+        /// Toggle the challengeButton between "Challenge" and "activity"
+        /// </summary>
+        /// <param name="sender"></param> Object that sent the event.
+        /// <param name="e"></param> Event params.
+        private void challengeButton_Click(object sender, EventArgs e)
+        {
+            presenter.changeBetweenChallengeAndActivity(button1, activityDecriptionLabel, activitiesLabel, activitiesListbox);
         }
 
         /// <summary>
@@ -130,7 +144,14 @@ namespace Halso_Hub
             string curItem = activitiesListbox.SelectedItem.ToString();
 			int index = activitiesListbox.FindString(curItem);
 
-            presenter.activityPressed(curItem);
+            if (button1.Text == "Challenge" || activitiesLabel.Text == "Activities for challenge")
+            {
+                presenter.activityPressed(curItem);
+            }
+            else
+            {
+                presenter.challengePressed(curItem);
+            }
         }
 
         /// <summary>
@@ -187,10 +208,34 @@ namespace Halso_Hub
         }
 
         /// <summary>
+        /// Updates the activitiesListBox with challenges.
+        /// </summary>
+        /// <param name="activities"></param> List with challenges
+        public void updateChallengeList(List<string> challenges)
+        {
+            activitiesListbox.Items.Clear();
+
+            foreach (string s in challenges)
+            {
+                activitiesListbox.Items.Add(s);
+            }
+        }
+
+        /// <summary>
         /// Updates the activityDescriptionBox with information about the selected activity.
         /// </summary>
         /// <param name="description"></param> Information about the selected activity.
         public void updateActivityInfo(string description)
+        {
+            activityDescriptionBox.Clear();
+            activityDescriptionBox.AppendText(description);
+        }
+
+        /// <summary>
+        /// Updates the activityDescriptionBox with information about the selected challenge
+        /// </summary>
+        /// <param name="description"></param> Information about the selected challenge
+        public void updateChallengeInfo(string description)
         {
             activityDescriptionBox.Clear();
             activityDescriptionBox.AppendText(description);
@@ -260,6 +305,28 @@ namespace Halso_Hub
             TrophyForm trophyForm = new TrophyForm();
             trophyForm.Text = "You have won a trophy!";
             trophyForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// Change the name on startButton to "Stop" or "Start"
+        /// </summary>
+        public void changeNameOnStartButton()
+        {
+            if (presenter.activitySelected && startButton.Text != "Stop")
+            {
+                startButton.Text = "Stop";
+            }
+
+            else if (startButton.Text == "Stop")
+            {
+                DialogResult dialogResult = MessageBox.Show("Do you really wanna quit?", "Quit", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    startButton.Text = "Start";
+                    hideTimer();
+                    presenter.dropActivity();
+                }
+            }
         }
 
     }
