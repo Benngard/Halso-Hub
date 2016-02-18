@@ -24,7 +24,7 @@ namespace Halso_Hub
 
         void setupTimer(string time);
         void updateTimer(string time);
-        void hideTimer();
+        void hideAndStopTimer();
 
         void createActivityPopUp();
         void createChallengePopUp();

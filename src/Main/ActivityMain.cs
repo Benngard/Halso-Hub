@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
+using Halso_Hub.Main;
 
 /// <summary>
 /// Main class building the program window

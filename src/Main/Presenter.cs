@@ -36,7 +36,7 @@ namespace Halso_Hub
         /// </summary>
         private void setupGUI()
         {
-            view.hideandStopTimer();
+            view.hideAndStopTimer();
             updateMoodButtons();
 
         }
@@ -45,8 +45,9 @@ namespace Halso_Hub
         /// Updates user with the selected mood and calls for updateMoodButtons()
         /// </summary>
         /// <param name="mood"></param> The mood the user selected
-        public void moodButtonPressed(string mood) {
-            switch(mood)
+        public void moodButtonPressed(string mood)
+        {
+            switch (mood)
             {
                 case "VerySad":
                     user.AddMood(MoodType.VerySad);
@@ -130,7 +131,8 @@ namespace Halso_Hub
         /// Potential TO-DO: Add exception handling.
         /// </summary>
         /// <param name="activityName"></param> What activity has been pressed
-        public void activityPressed(string activityName) {
+        public void activityPressed(string activityName)
+        {
             currentActivityHover = activityName;
             Activity tmp = user.findRecommendedActivityByName(activityName);
             if (tmp != null)
@@ -141,7 +143,7 @@ namespace Halso_Hub
                     view.updateActivityInfo(description);
                 }
             }
-            
+
         }
 
         /// <summary>
@@ -150,10 +152,12 @@ namespace Halso_Hub
         /// Potential TO-DO: Add exception handler, more validation methods.
         /// </summary>
         /// <param name="activity"></param>
-        public void startButtonPressed() {
+        public void startButtonPressed()
+        {
             Activity startedActivity = user.findRecommendedActivityByName(currentActivityHover);
 
-            if (startedActivity != null) {
+            if (startedActivity != null)
+            {
                 user.SetCurrentActivity(startedActivity);
                 timeLeft = user.CurrentActivity.TimeLeft;
                 setupAndStartTimer();
