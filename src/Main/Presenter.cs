@@ -36,7 +36,7 @@ namespace Halso_Hub
         /// </summary>
         private void setupGUI()
         {
-            view.hideTimer();
+            view.hideandStopTimer();
             updateMoodButtons();
 
         }
@@ -180,7 +180,7 @@ namespace Halso_Hub
             }
             else
             {
-                view.hideTimer();
+                view.hideAndStopTimer();
                 completeActivity();
             }
         }
@@ -197,6 +197,7 @@ namespace Halso_Hub
                 recommendedActivities.Add(a.Name);
             }
             view.updateActivityList(recommendedActivities);
+            view.createActivityPopUp();
             // Run the complete activity pop-up
             // Need to add method(s) to IActivityMain to run the pop-up
         }

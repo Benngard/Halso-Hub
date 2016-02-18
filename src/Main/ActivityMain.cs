@@ -221,10 +221,45 @@ namespace Halso_Hub
         /// <summary>
         /// Hides the timer
         /// </summary>
-        public void hideTimer()
+        public void hideAndStopTimer()
         {
             timerText.Visible = false;
             timeLeftText.Visible = false;
+            timer.Stop();
         }
+
+        /// <summary>
+        /// Creates the pop-up window for a activity from the other form Pop-up_Form
+        /// and shows it as a dialog to make it impossible for the user to interact with the main form
+        /// </summary>
+        public void createActivityPopUp()
+        {
+            Pop_up pop_up = new Pop_up();
+            pop_up.Text = "Congratulations you have finished the chosen activity!";
+            pop_up.ShowDialog();
+        }
+
+        /// <summary>
+        /// Creates the pop-up window for a challenge from the other form Pop-up_Form
+        /// and shows it as a dialog to make it impossible for the user to interact with the main form
+        /// </summary>
+        public void createChallengePopUp()
+        {
+            Pop_up pop_up = new Pop_up();
+            pop_up.Text = "Congratulations you have finished the chosen challenge!";
+            pop_up.ShowDialog();
+        }
+
+        /// <summary>
+        /// Creates the pop-up window for a trophy from the other form Pop-up_Form
+        /// and shows it as a dialog to make it impossible for the user to interact with the main form
+        /// </summary>
+        public void createTrophyPopUp()
+        {
+            TrophyForm trophyForm = new TrophyForm();
+            trophyForm.Text = "You have won a trophy!";
+            trophyForm.ShowDialog();
+        }
+
     }
 }
