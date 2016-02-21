@@ -56,14 +56,14 @@ CREATE VIEW `halso_hub`.UserTotalGold AS
 
 CREATE VIEW `halso_hub`.ChallengeActivitiesLeftInCurrentChallenge AS
 (
-	SELECT OnGoingChallenge.userName, ChallengeRequires.activityName, ChallengeRequires.nr, ChallengeRequires.nr-ActivityCompleted.nrToday AS nrLeft
+	SELECT OnGoingChallenge.userName, ChallengeRequires.challengeName, ChallengeRequires.activityName, ChallengeRequires.nr, GREATEST( ChallengeRequires.nr - IFNULL( ActivityCompleted.nrToday, 0 ), 0)  AS nrLeft
     FROM OnGoingChallenge JOIN ChallengeRequires
 		ON OnGoingChallenge.challengeName = ChallengeRequires.challengeName
 	LEFT JOIN ActivityCompleted
-		ON ActivityCompleted.activityName = ChallengeRequires.activityName AND ActivityCompleted.nrToday < ChallengeRequires.nr
+		ON ActivityCompleted.activityName = ChallengeRequires.activityName 
+        AND ActivityCompleted.userName = OnGoingChallenge.userName 
 	
 	ORDER BY OnGoingChallenge.userName
-	
 	
 );
 

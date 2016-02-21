@@ -3,7 +3,7 @@ DELIMITER $$
 
 /*	 ActivityCompleted	 */
 
-CREATE TRIGGER `halso_hub`.AddCompleteActivity
+CREATE TRIGGER `halso_hub`.AddsToCompleteActivity
 BEFORE INSERT ON `halso_hub`.ActivityCompleted
 
 FOR EACH ROW

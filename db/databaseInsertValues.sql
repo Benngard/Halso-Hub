@@ -88,10 +88,13 @@ INSERT INTO ActivityCompleted
 VALUES ('Ola','Limbo', 1, 1);
 
 INSERT INTO ActivityCompleted
-VALUES ('Mattias','Situps', 2, 1);
+VALUES ('Mattias','Situps', 4, 3);
 
 INSERT INTO ActivityCompleted
 VALUES ('Johan','Cat video', 1, 0);
+
+INSERT INTO ActivityCompleted
+VALUES ('Daniel','Limbo', 2, 1);
 
 
 
