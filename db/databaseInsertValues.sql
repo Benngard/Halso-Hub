@@ -1,15 +1,15 @@
 
 
-INSERT INTO User 
+INSERT INTO Users 
 VALUES ('Ola');
 
-INSERT INTO User 
+INSERT INTO Users
 VALUES ('Mattias');
 
-INSERT INTO User 
+INSERT INTO Users 
 VALUES ('Johan');
 
-INSERT INTO user
+INSERT INTO Users
 VALUES ('Daniel');
 
 /* MOOD */
@@ -79,19 +79,21 @@ VALUES ('Square','Limbo');
 
 /* ACTIVITYCOMPLETED */
 INSERT INTO ActivityCompleted
-VALUES ('Ola','Pushups');
+VALUES ('Ola','Pushups', 1, 0);
 
 INSERT INTO ActivityCompleted
-VALUES ('Ola','Situps');
+VALUES ('Ola','Situps', 3, 2);
 
 INSERT INTO ActivityCompleted
-VALUES ('Ola','Limbo');
+VALUES ('Ola','Limbo', 1, 1);
 
 INSERT INTO ActivityCompleted
-VALUES ('Mattias','Situps');
+VALUES ('Mattias','Situps', 2, 1);
 
 INSERT INTO ActivityCompleted
-VALUES ('Johan','Cat video');
+VALUES ('Johan','Cat video', 1, 0);
+
+
 
 /* ONGOINGACTIVITY */
 INSERT INTO OnGoingActivity
@@ -112,13 +114,13 @@ VALUES ('Cat lover','Cat video');
 
 /* CHALLENGEREQUIRES */
 INSERT INTO ChallengeRequires
-VALUES ('Flexibility & Strength','Limbo');
+VALUES ('Flexibility & Strength','Limbo', 3);
 
 INSERT INTO ChallengeRequires
-VALUES ('Flexibility & Strength','Pushups');
+VALUES ('Flexibility & Strength','Pushups', 4);
 
 INSERT INTO ChallengeRequires
-VALUES ('Flexibility & Strength','Situps');
+VALUES ('Flexibility & Strength','Situps', 2);
 
 /* EARNEDTROPHY */
 INSERT INTO EarnedTrophy
@@ -128,6 +130,7 @@ INSERT INTO EarnedTrophy
 VALUES ('Johan','Cat lover');
 
 /* USERMOOD */
+
 INSERT INTO UserMood
 VALUES ('Ola','Bored');
 
@@ -143,7 +146,10 @@ VALUES ('Training deluxe','Flexibility & Strength');
 
 /* ONGOINGCHALLENGE */
 INSERT INTO OnGoingChallenge
-VALUES ('Mattias','Flexibility & Strengthuser');
+VALUES ('Mattias','Flexibility & Strength');
+
+INSERT INTO OnGoingChallenge
+VALUES ('Daniel','Flexibility & Strength');
 
 /* CHALLENGECOMPLETED */
 INSERT INTO ChallengeCompleted

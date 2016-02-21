@@ -28,7 +28,7 @@ CREATE TABLE `halso_hub`.Trophy
 	CHECK (Quality='Bronze' OR Quality='Silver' OR Quality='Gold')
 );
 
-CREATE TABLE `halso_hub`.User
+CREATE TABLE `halso_hub`.Users
 (
 	Name			varchar(255)	NOT NULL,
 	PRIMARY KEY (Name)

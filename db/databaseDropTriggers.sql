@@ -1,2 +1,4 @@
 DROP TRIGGER 
-	`halso_hub`.`CompleteActivity`; 
+	`halso_hub`.AddCompleteActivity;
+DROP TRIGGER     
+    `halso_hub`.UpdateCompleteActivity; 
