@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 /// <summary>
 /// Anton Andrén
@@ -16,12 +17,13 @@ namespace Halso_Hub
         private IUser user;
         private IActivityMain view;
 
-        private string activitySelected;
+        public bool activitySelected;
         public bool challengeSelected;
 
         private int moodButtonState;
         private int timeLeft;
         private string currentActivityHover;
+        private string currentChallengeHover;
 
         public Presenter(IActivityMain view, IUser user)
         {

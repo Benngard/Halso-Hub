@@ -118,7 +118,7 @@ namespace Halso_Hub
         {
             if (!presenter.activitySelected)
             {
-                presenter.startButtonPressed(button1, activityDecriptionLabel, activitiesLabel);
+                presenter.startButtonPressed(challengeButton, activityDecriptionLabel, activitiesLabel);
             }
             changeNameOnStartButton();
         }
@@ -130,7 +130,7 @@ namespace Halso_Hub
         /// <param name="e"></param> Event params.
         private void challengeButton_Click(object sender, EventArgs e)
         {
-            presenter.changeBetweenChallengeAndActivity(button1, activityDecriptionLabel, activitiesLabel, activitiesListbox);
+            presenter.changeBetweenChallengeAndActivity(challengeButton, activityDecriptionLabel, activitiesLabel, activitiesListbox);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Halso_Hub
             string curItem = activitiesListbox.SelectedItem.ToString();
 			int index = activitiesListbox.FindString(curItem);
 
-            if (button1.Text == "Challenge" || activitiesLabel.Text == "Activities for challenge")
+            if (challengeButton.Text == "Challenge" || activitiesLabel.Text == "Activities for challenge")
             {
                 presenter.activityPressed(curItem);
             }
@@ -323,11 +323,10 @@ namespace Halso_Hub
                 if (dialogResult == DialogResult.Yes)
                 {
                     startButton.Text = "Start";
-                    hideTimer();
+                    hideAndStopTimer();
                     presenter.dropActivity();
                 }
             }
         }
-
     }
 }
