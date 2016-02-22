@@ -24,7 +24,7 @@ namespace Halso_Hub
         {
             User = user;
             InitializeComponent();
-            this.button1.Text = "CLICK ME";
+            this.button1.Text = "Login";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -37,10 +37,11 @@ namespace Halso_Hub
         /// <param name="user"></param>string representing a user in the database
         public void executeProgram(string user)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"C:\Users\Ola\Documents\Visual Studio 2015\Projects\HälsoHubTestWORKING\HälsoHubTest\bin\Debug\HälsoHubTest";
-            startInfo.Arguments = "" + user;
-            Process.Start(startInfo);
+            Process process = new Process();
+            String filePath = @"C:\Users\Ola\Documents\Visual Studio 2015\Projects\Halso_Hub\Halso_Hub\bin\Debug\Halso_Hub";
+            process.StartInfo.FileName = filePath;
+            process.StartInfo.Arguments = @"" + user;
+            process.Start();
         }
     }
 }

@@ -17,9 +17,12 @@ namespace Halso_Hub
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(String[] args)
         {
-            //MessageBox.Show("" + args[0]);
+            if (args.Length > 0)
+            {
+                MessageBox.Show("" + args[0]);
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ActivityMain ActivityMain = new ActivityMain();
