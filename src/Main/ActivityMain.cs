@@ -275,6 +275,22 @@ namespace Halso_Hub
         }
 
         /// <summary>
+        /// Stops the timer
+        /// </summary>
+        public void StopTimer()
+        {
+            timer.Stop();
+        }
+
+        /// <summary>
+        /// Starts the timer
+        /// </summary>
+        public void StartTimer()
+        {
+            timer.Start();
+        }
+
+        /// <summary>
         /// Creates the pop-up window for a activity from the other form Pop-up_Form
         /// and shows it as a dialog to make it impossible for the user to interact with the main form
         /// </summary>
@@ -312,19 +328,25 @@ namespace Halso_Hub
         /// </summary>
         public void changeNameOnStartButton()
         {
-            if (presenter.activitySelected && startButton.Text != "Stop")
+            if (presenter.activitySelected && startButton.Text == "Start")
             {
                 startButton.Text = "Stop";
             }
 
             else if (startButton.Text == "Stop")
             {
+                StopTimer();
                 DialogResult dialogResult = MessageBox.Show("Do you really wanna quit?", "Quit", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     startButton.Text = "Start";
                     hideAndStopTimer();
                     presenter.dropActivity();
+                    presenter.activitySelected = false;
+                }
+                else
+                {
+                    StartTimer();
                 }
             }
         }
