@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -25,13 +26,19 @@ namespace Halso_Hub
         private string currentActivityHover;
         private string currentChallengeHover;
 
+        //public List<Activity> allActivities;
+
+        private ConnectToDatabase connectToDatabase;
+
         public Presenter(IActivityMain view, IUser user)
         {
+            connectToDatabase = new ConnectToDatabase("halso_hub");
             this.user = user;
             this.view = view;
             moodButtonState = 0;
             view.setPresenter(this);
             setupGUI();
+            //GetAllActivities();      
         }
 
         /// <summary>
@@ -116,11 +123,7 @@ namespace Halso_Hub
                     view.updateMoodButtons("VeryLonely", "Lonely", "Sociable", "VerySociable", "How do you feel?");
                     break;
                 case 4:
-                    var recommendedActivities = new List<string>();
-                    foreach (Activity a in user.GetRecommendedActivities())
-                    {
-                        recommendedActivities.Add(a.Name);
-                    }
+                    var recommendedActivities = connectToDatabase.GetActivitiesQuery();
                     view.updateActivityList(recommendedActivities);
                     view.showOneMoodButton();
                     view.updateMoodButtons("Update now!", "Hidden", "Hidden", "Hidden", "Do you want to update your Mood?");
@@ -137,16 +140,8 @@ namespace Halso_Hub
         public void activityPressed(string activityName)
         {
             currentActivityHover = activityName;
-            Activity tmp = user.findRecommendedActivityByName(activityName);
-            if (tmp != null)
-            {
-                string description = tmp.Description;
-                if (description != null)
-                {
-                    view.updateActivityInfo(description);
-                }
-            }
-
+            String description = connectToDatabase.GetActivityDescriptionQuery(activityName);
+            view.updateActivityInfo(description);
         }
 
         /// <summary>
@@ -156,16 +151,8 @@ namespace Halso_Hub
         public void challengePressed(string challengeName)
         {
             currentChallengeHover = challengeName;
-            Challenge tmp = user.findRecommendedActivityForChallenge(challengeName);
-            if (tmp != null)
-            {
-                string description = tmp.Description;
-                if (description != null)
-                {
-                    view.updateChallengeInfo(description);
-                }
-            }
-
+            String description = connectToDatabase.GetChallengeDescriptionQuery(challengeName);
+            view.updateChallengeInfo(description);
         }
 
         /// <summary>
@@ -178,7 +165,7 @@ namespace Halso_Hub
         {
             if (b.Text == "Challenge" || user.CurrentChallenge != null)
             {
-                Activity startedActivity = user.findRecommendedActivityByName(currentActivityHover);
+                Activity startedActivity = connectToDatabase.GetActivityQuery(currentActivityHover);
 
                 if (startedActivity != null)
                 {
@@ -198,12 +185,9 @@ namespace Halso_Hub
                     challengeSelected = true;
                 }
 
-                var recommendedActivities = new List<string>();
-                foreach (Activity a in startedChallenge.Requirements)
-                {
-                    recommendedActivities.Add(a.Name);
-                }
+                var recommendedActivities = connectToDatabase.GetActivitiesQuery();
                 view.updateActivityList(recommendedActivities);
+
                 labelDescription.Text = "Description";
                 l.Text = "Activities for challenge";
             }
@@ -240,11 +224,7 @@ namespace Halso_Hub
         /// </summary>
         private void completeActivity()
         {
-            var recommendedActivities = new List<string>();
-            foreach (Activity a in user.GetRecommendedActivities())
-            {
-                recommendedActivities.Add(a.Name);
-            }
+            var recommendedActivities = connectToDatabase.GetActivitiesQuery();
             view.updateActivityList(recommendedActivities);
             view.createActivityPopUp();
             // Run the complete activity pop-up
@@ -286,21 +266,17 @@ namespace Halso_Hub
         /// <summary>
         /// Change between challenge and activity 
         /// </summary>
-        public void changeBetweenChallengeAndActivity(Button b, Label labelDescription, Label l, ListBox lb)
+        public void changeBetweenChallengeAndActivity(Button b, Label labelDescription, Label l, ListBox lb, RichTextBox rtb)
         {
             if (b.Text == "Challenge")
             {
                 b.Text = "Activity";
                 labelDescription.Text = "Challenge Description";
                 l.Text = "Challenges";
-
                 lb.Items.Clear();
+                rtb.Clear();
 
-                var recommendedChallenges = new List<string>();
-                foreach (Challenge c in user.GetRecommendedChallenges())
-                {
-                    recommendedChallenges.Add(c.Name);
-                }
+                var recommendedChallenges = connectToDatabase.GetChallengesQuery();
                 view.updateActivityList(recommendedChallenges);
             }
             else {
@@ -308,6 +284,7 @@ namespace Halso_Hub
                 labelDescription.Text = "Activity Description";
                 l.Text = "Activities";
                 lb.Items.Clear();
+                rtb.Clear();
             }
         }
 
@@ -328,5 +305,13 @@ namespace Halso_Hub
         {
             return user.CurrentActivity == null ? true : false;
         }
+
+        /*/// <summary>
+        /// Gets all activities from the database
+        /// </summary>
+        public void GetAllActivities()
+        {
+            allActivities = connectToDatabase.GetAllActivitiesQuery();
+        }*/
     }
 }

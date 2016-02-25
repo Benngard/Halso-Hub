@@ -130,7 +130,7 @@ namespace Halso_Hub
         /// <param name="e"></param> Event params.
         private void challengeButton_Click(object sender, EventArgs e)
         {
-            presenter.changeBetweenChallengeAndActivity(challengeButton, activityDecriptionLabel, activitiesLabel, activitiesListbox);
+            presenter.changeBetweenChallengeAndActivity(challengeButton, activityDecriptionLabel, activitiesLabel, activitiesListbox, activityDescriptionBox);
         }
 
         /// <summary>
@@ -214,7 +214,6 @@ namespace Halso_Hub
         public void updateChallengeList(List<string> challenges)
         {
             activitiesListbox.Items.Clear();
-
             foreach (string s in challenges)
             {
                 activitiesListbox.Items.Add(s);
