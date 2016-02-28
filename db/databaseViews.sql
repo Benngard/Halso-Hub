@@ -53,7 +53,6 @@ CREATE VIEW `halso_hub`.UserTotalGold AS
     
 );
 
-
 CREATE VIEW `halso_hub`.ChallengeActivitiesLeftInCurrentChallenge AS
 (
 	SELECT OnGoingChallenge.userName, ChallengeRequires.challengeName, ChallengeRequires.activityName, ChallengeRequires.nr, GREATEST( ChallengeRequires.nr - IFNULL( ActivityCompleted.nrToday, 0 ), 0)  AS nrLeft

@@ -88,7 +88,10 @@ INSERT INTO ActivityCompleted
 VALUES ('Ola','Limbo', 1, 1);
 
 INSERT INTO ActivityCompleted
-VALUES ('Mattias','Situps', 4, 3);
+VALUES ('Mattias','Situps', 4, 2);
+
+INSERT INTO ActivityCompleted
+VALUES ('Mattias','Pushups', 3, 3);
 
 INSERT INTO ActivityCompleted
 VALUES ('Johan','Cat video', 1, 0);
@@ -117,13 +120,13 @@ VALUES ('Cat lover','Cat video');
 
 /* CHALLENGEREQUIRES */
 INSERT INTO ChallengeRequires
-VALUES ('Flexibility & Strength','Limbo', 3);
+VALUES ('Flexibility & Strength','Limbo', 2);
 
 INSERT INTO ChallengeRequires
-VALUES ('Flexibility & Strength','Pushups', 4);
+VALUES ('Flexibility & Strength','Pushups', 3);
 
 INSERT INTO ChallengeRequires
-VALUES ('Flexibility & Strength','Situps', 2);
+VALUES ('Flexibility & Strength','Situps', 1);
 
 /* EARNEDTROPHY */
 INSERT INTO EarnedTrophy
@@ -157,7 +160,3 @@ VALUES ('Daniel','Flexibility & Strength');
 /* CHALLENGECOMPLETED */
 INSERT INTO ChallengeCompleted
 VALUES ('Ola','Flexibility & Strength');
-
-/* CHALLENGECOMPLETED */
-INSERT INTO ChallengeCompleted
-VALUES ('Mattias','Flexibility & Strength');
