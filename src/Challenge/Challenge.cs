@@ -9,7 +9,7 @@ namespace Halso_Hub
 	/// <summary>
 	/// A challenge set up by supervisor(s) for user(s) to perform. Can hold one to many activities.
 	/// </summary>
-	class Challenge
+	public class Challenge
 	{
 		public string Name { get; private set; }
 		public string Description { get; private set; }

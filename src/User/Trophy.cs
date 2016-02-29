@@ -18,7 +18,7 @@ namespace Halso_Hub
 	/// <summary>
 	/// Is an earned, by a user, trophy.
 	/// </summary>
-	class Trophy
+	public class Trophy
 	{
 		public string Name { get; private set; }
 		public string Description { get; private set; }

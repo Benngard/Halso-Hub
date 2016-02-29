@@ -6,7 +6,7 @@ namespace Halso_Hub
 	/// <summary>
 	/// Is an active currently being undertaken by a user.
 	/// </summary>
-	class CurrentActivity
+	public class CurrentActivity
 	{
 		public Activity Activity { get; private set; }
 		public int TimeLeft { get; private set; }

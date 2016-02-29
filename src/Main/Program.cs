@@ -23,12 +23,14 @@ namespace Halso_Hub
             {
                 MessageBox.Show("" + args[0]);
             }
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            ActivityMain ActivityMain = new ActivityMain();
-            User user = new User("testUser");
-            Presenter presenter = new Presenter(ActivityMain, user);
-            Application.Run(ActivityMain);
-        }
+
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			MainForm MainForm = new MainForm();
+			User user = new User("testUser");
+			Presenter presenter = new Presenter(MainForm, user);
+			Application.Run(MainForm);
+
+		}
     }
 }

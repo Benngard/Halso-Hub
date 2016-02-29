@@ -13,15 +13,14 @@ namespace Halso_Hub
     /// <summary>
     /// Presenter class responsible for reacting to user input and updating the user
     /// </summary>
-    class Presenter
+    public class Presenter
     {
         private IUser user;
-        private IActivityMain view;
+        private IMainForm view;
 
         public bool activitySelected;
         public bool challengeSelected;
 
-        private int moodButtonState;
         private int timeLeft;
         private string currentActivityHover;
         private string currentChallengeHover;
@@ -30,16 +29,17 @@ namespace Halso_Hub
 
         private ConnectToDatabase connectToDatabase;
 
-        public Presenter(IActivityMain view, IUser user)
+        public Presenter(IMainForm view, IUser user)
         {
             connectToDatabase = new ConnectToDatabase("halso_hub");
             this.user = user;
             this.view = view;
-            moodButtonState = 0;
             view.setPresenter(this);
             setupGUI();
-            //GetAllActivities();      
-        }
+			var recommendedActivities = connectToDatabase.GetActivitiesQuery();
+			view.updateActivityList(recommendedActivities);
+			//GetAllActivities();      
+		}
 
         /// <summary>
         /// Setups the gui on startup.
@@ -47,90 +47,20 @@ namespace Halso_Hub
         private void setupGUI()
         {
             view.hideAndStopTimer();
-            updateMoodButtons();
-
         }
 
-        /// <summary>
-        /// Updates user with the selected mood and calls for updateMoodButtons()
-        /// </summary>
-        /// <param name="mood"></param> The mood the user selected
-        public void moodButtonPressed(string mood)
+		/// <summary>
+		/// Updates user with the selected mood and calls for ChangeMood()
+		/// </summary>
+		/// <param name="mood"></param> The mood the user selected
+		public void moodButtonPressed(string type, MoodType mood)
         {
-            switch (mood)
-            {
-                case "VerySad":
-                    user.AddMood(MoodType.VerySad);
-                    break;
-                case "Sad":
-                    user.AddMood(MoodType.Sad);
-                    break;
-                case "Happy":
-                    user.AddMood(MoodType.Happy);
-                    break;
-                case "VeryTierd":
-                    user.AddMood(MoodType.VeryTierd);
-                    break;
-                case "Tired":
-                    user.AddMood(MoodType.Tired);
-                    break;
-                case "Energetic":
-                    user.AddMood(MoodType.Energetic);
-                    break;
-                case "VeryStressed":
-                    user.AddMood(MoodType.VeryStressed);
-                    break;
-                case "Stressed":
-                    user.AddMood(MoodType.Stressed);
-                    break;
-                case "Calm":
-                    user.AddMood(MoodType.Calm);
-                    break;
-                case "VeryLonely":
-                    user.AddMood(MoodType.VeryLonely);
-                    break;
-                case "Lonely":
-                    user.AddMood(MoodType.Lonely);
-                    break;
-                case "Sociable":
-                    user.AddMood(MoodType.Sociable);
-                    break;
-                default: break;
-            }
-            moodButtonState = (moodButtonState + 1) % 5;
-            updateMoodButtons();
-        }
+			user.ChangeMood(type, mood);
+			var recommendedActivities = connectToDatabase.GetActivitiesQuery();
+			view.updateActivityList(recommendedActivities);
+		}
 
-        /// <summary>
-        /// Updates the Mood Buttons in the GUI
-        /// </summary>
-        private void updateMoodButtons()
-        {
-            switch (moodButtonState)
-            {
-                case 0:
-                    user.ResetMood();
-                    view.updateMoodButtons("VerySad", "Sad", "Happy", "VeryHappy", "How do you feel?");
-                    view.showAllMoodButtons();
-                    break;
-                case 1:
-                    view.updateMoodButtons("VeryTierd", "Tired", "Energetic", "VeryEnergetic", "How do you feel?");
-                    break;
-                case 2:
-                    view.updateMoodButtons("VeryStressed", "Stressed", "Calm", "VeryCalm", "How do you feel?");
-                    break;
-                case 3:
-                    view.updateMoodButtons("VeryLonely", "Lonely", "Sociable", "VerySociable", "How do you feel?");
-                    break;
-                case 4:
-                    var recommendedActivities = connectToDatabase.GetActivitiesQuery();
-                    view.updateActivityList(recommendedActivities);
-                    view.showOneMoodButton();
-                    view.updateMoodButtons("Update now!", "Hidden", "Hidden", "Hidden", "Do you want to update your Mood?");
-                    break;
-            }
-        }
-
+		
         /// <summary>
         /// Called when a user selects an activity in the GUI.
         /// Loads the description of the activity in the GUI.
@@ -160,20 +90,17 @@ namespace Halso_Hub
         /// Loads the activity in user and starts the activity with its validation method.
         /// Potential TO-DO: Add exception handler, more validation methods.
         /// </summary>
-        /// <param name="activity"></param>
-        public void startButtonPressed(Button b, Label labelDescription, Label l)
+        public void startActivityButtonPressed()
         {
-            if (b.Text == "Challenge" || user.CurrentChallenge != null)
-            {
-                Activity startedActivity = connectToDatabase.GetActivityQuery(currentActivityHover);
 
-                if (startedActivity != null)
-                {
-                    user.SetCurrentActivity(startedActivity);
-                    timeLeft = user.CurrentActivity.TimeLeft;
-                    setupAndStartTimer();
-                    activitySelected = true;
-                }
+			Activity startedActivity = connectToDatabase.GetActivityQuery(currentActivityHover);
+
+			if (startedActivity != null && activitySelected == false)
+            {
+				user.SetCurrentActivity(startedActivity);
+				timeLeft = user.CurrentActivity.TimeLeft;
+				setupAndStartTimer();
+				activitySelected = true;
             }
             else
             {
@@ -188,8 +115,7 @@ namespace Halso_Hub
                 var recommendedActivities = connectToDatabase.GetActivitiesQuery();
                 view.updateActivityList(recommendedActivities);
 
-                labelDescription.Text = "Description";
-                l.Text = "Activities for challenge";
+                
             }
         }
 

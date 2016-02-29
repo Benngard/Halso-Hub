@@ -8,7 +8,7 @@ namespace Halso_Hub
 	/// <summary>
 	/// Is the current challenge active for a user.
 	/// </summary>
-	class CurrentChallenge
+	public class CurrentChallenge
 	{		
 		public Challenge Challenge { get; private set; }
 		public Time StartTime { get; private set; }

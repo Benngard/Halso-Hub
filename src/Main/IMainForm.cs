@@ -11,13 +11,9 @@ namespace Halso_Hub
     /// <summary>
     /// Interface for the view (ActivityMain) used by the presenter.
     /// </summary>
-    public interface IActivityMain
+    public interface IMainForm
     {
-        void setPresenter(Presenter presenter);
-
-        void updateMoodButtons(string one, string two, string three, string four, string title);
-        void showAllMoodButtons();
-        void showOneMoodButton();
+		void setPresenter(Presenter presenter);
 
         void updateActivityList(List<string> activities);
         void updateActivityInfo(string description);

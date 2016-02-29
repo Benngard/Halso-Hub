@@ -20,7 +20,7 @@ namespace Halso_Hub
 	/// <summary>
 	/// An activity completed by a user.
 	/// </summary>
-	class CompletedActivity
+	public class CompletedActivity
 	{
 		public Activity Activity { get; private set; }
 		public ActivityGrade Grade {get; private set;}

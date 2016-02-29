@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,19 +12,20 @@ namespace Halso_Hub
     /// <summary>
     /// Interface for the model (user) used by the presenter.
     /// </summary>
-    interface IUser
+    public interface IUser
     {
         string Username { get; }
-        HashSet<MoodType> CurrentMood { get; }
-        CurrentActivity CurrentActivity { get; }
+        Hashtable CurrentMood { get; }
+		CurrentActivity CurrentActivity { get; }
         List<CompletedActivity> CompletedActivities { get; }
         List<Trophy> Trophies { get; }
         CurrentChallenge CurrentChallenge { get; }
         List<Challenge> CompletedChallenges { get; }
         List<Challenge> GetRecommendedChallenges();
 
-        void AddMood(MoodType moodType);
-        void ResetMood();
+
+		void ChangeMood(String type, MoodType mood);
+		void ResetMood();
         void SetCurrentActivity(Activity newActivity);
         void DropCurrentActivity();
         List<Activity> GetRecommendedActivities();

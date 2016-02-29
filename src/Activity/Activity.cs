@@ -8,7 +8,7 @@ namespace Halso_Hub
 	/// <summary>
 	/// An activity for a user to perform.
 	/// </summary>
-	class Activity
+	public class Activity
 	{
 		public string Name { get; private set; }
 		public string Description { get; private set; }

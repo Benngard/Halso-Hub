@@ -46,7 +46,6 @@ namespace Halso_Hub
         /// <param name="e"></param> event params (not used)
 		private void timer_Tick(object sender, EventArgs e)
 		{
-
             presenter.timerTick();
 		}
 
@@ -76,7 +75,7 @@ namespace Halso_Hub
         /// <param name="sender"></param> object that sent the event
         /// <param name="e"></param> event params (not used)
         private void moodButton1_Click(object sender, EventArgs e) {
-            presenter.moodButtonPressed(moodButton1.Text);
+            //presenter.moodButtonPressed(moodButton1.Text);
         }
 
         /// <summary>
@@ -86,7 +85,7 @@ namespace Halso_Hub
         /// <param name="e"></param> event params (not used)
         private void moodButton2_Click(object sender, EventArgs e)
         {
-            presenter.moodButtonPressed(moodButton2.Text);
+            //presenter.moodButtonPressed(moodButton2.Text);
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace Halso_Hub
         /// <param name="e"></param> event params (not used)
         private void moodButton3_Click(object sender, EventArgs e)
         {
-            presenter.moodButtonPressed(moodButton3.Text);
+            //presenter.moodButtonPressed(moodButton3.Text);
         }
 
         /// <summary>
@@ -106,7 +105,7 @@ namespace Halso_Hub
         /// <param name="e"></param> event params (not used)
         private void moodButton4_Click(object sender, EventArgs e)
         {
-            presenter.moodButtonPressed(moodButton4.Text);
+            //presenter.moodButtonPressed(moodButton4.Text);
         }
 
         /// <summary>
@@ -118,7 +117,7 @@ namespace Halso_Hub
         {
             if (!presenter.activitySelected)
             {
-                presenter.startButtonPressed(challengeButton, activityDecriptionLabel, activitiesLabel);
+                //presenter.startButtonPressed(challengeButton, activityDecriptionLabel, activitiesLabel);
             }
             changeNameOnStartButton();
         }

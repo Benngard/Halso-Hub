@@ -8,7 +8,7 @@ namespace Halso_Hub
 	/// <summary>
 	/// Helper class to store a time in 00:00:00 format. Fields are public!
 	/// </summary>
-	class Time
+	public class Time
 	{
 		public int Hours { get; set; }
 		public int Minutes { get; set; }

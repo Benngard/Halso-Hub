@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,7 +15,7 @@ namespace Halso_Hub
     {
 		public string Username { get; private set; }
 		
-		public HashSet<MoodType> CurrentMood { get; private set; }
+		public Hashtable CurrentMood { get; private set; }
 
 		public CurrentActivity CurrentActivity { get; private set; }
 		public List<CompletedActivity> CompletedActivities { get; private set; }
@@ -32,15 +33,21 @@ namespace Halso_Hub
 		public User (string username)
 		{
 			Username = username;
+			CurrentMood = new Hashtable();
+			CurrentMood.Add("sad", MoodType.VeryHappy);
+			CurrentMood.Add("tired", MoodType.VeryEnergetic);
+			CurrentMood.Add("stressed", MoodType.VeryCalm);
+			CurrentMood.Add("lonely", MoodType.VerySociable);
 		}
 
 		/// <summary>
 		/// Adds a new mood to the user.
 		/// </summary>
 		/// <param name="moodType">Which MoodType to add. Duplicates will not be stored.</param>
-		public void AddMood(MoodType moodType)
+		public void ChangeMood(String type, MoodType mood)
 		{
-			//CurrentMood.Add(moodType);
+			CurrentMood.Remove(type);
+			CurrentMood.Add(type,mood);
 		}
 
         /// <summary>
