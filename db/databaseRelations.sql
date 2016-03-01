@@ -37,9 +37,13 @@ CREATE TABLE `halso_hub`.ActivityRewards
 (
 	trophyName			varchar(255)	NOT NULL,
 	activityName		varchar(255)	NOT NULL,
+    totalNr				int,
 	PRIMARY KEY (trophyName, activityName),
 	FOREIGN KEY (trophyName) REFERENCES Trophy(name),
-	FOREIGN KEY (activityName) REFERENCES Activity(name)
+	FOREIGN KEY (activityName) REFERENCES Activity(name),
+    
+    CONSTRAINT positiveNr
+		CHECK (totalNr > 0)
 );
 
 CREATE TABLE `halso_hub`.ChallengeRequires

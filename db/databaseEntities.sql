@@ -38,7 +38,7 @@ CREATE TABLE `halso_hub`.Challenge
 (
 	Name			varchar(255)	NOT NULL,
 	Description		text,
-	StartTime		int,
-	EndTime			int,
+	StartTime		text,
+	EndTime			text,
 	PRIMARY KEY (Name)
 );

@@ -56,7 +56,7 @@ VALUES ('Training deluxe','You must love to exercise!','Gold');
 
 /* CHALLENGE */
 INSERT INTO Challenge
-VALUES ('Flexibility & Strength','Complete both Strength of an ox and Limbo Master to finish this challenge!','0','600');
+VALUES ('Flexibility & Strength','Complete both Strength of an ox and Limbo Master to finish this challenge!','00:00:00','23:54:00');
 
 /* databaseRelations
 ------------------------------------*/
@@ -107,16 +107,23 @@ VALUES ('Johan','Limbo');
 
 /* ACTIVITYREWARDS */
 INSERT INTO ActivityRewards
-VALUES ('Strength of an oxe','Pushups');
+VALUES ('Strength of an oxe','Pushups', 1);
 
 INSERT INTO ActivityRewards
-VALUES ('Strength of an oxe','Situps');
+VALUES ('Strength of an oxe','Situps', 2);
 
 INSERT INTO ActivityRewards
-VALUES ('Limbo master','Limbo');
+VALUES ('Limbo master','Limbo', 1);
 
 INSERT INTO ActivityRewards
-VALUES ('Cat lover','Cat video');
+VALUES ('Cat lover','Cat video', 2);
+
+INSERT INTO ActivityRewards
+VALUES ('Training deluxe','Pushups', 5);
+
+INSERT INTO ActivityRewards
+VALUES ('Training deluxe','Situps', 5);
+
 
 /* CHALLENGEREQUIRES */
 INSERT INTO ChallengeRequires

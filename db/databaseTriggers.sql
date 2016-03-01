@@ -9,7 +9,7 @@ AFTER INSERT ON `halso_hub`.ActivityCompleted
 FOR EACH ROW
 
 BEGIN
-
+	
 	DECLARE challenge varchar(255);
     DECLARE activityNrLeft integer;
     
@@ -28,7 +28,7 @@ BEGIN
 		DELETE FROM OnGoingChallenge
 			WHERE NEW.userName = OnGoingChallenge.userName;
     END IF;
-
+    
 END;
 $$
 

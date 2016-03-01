@@ -66,4 +66,28 @@ CREATE VIEW `halso_hub`.ChallengeActivitiesLeftInCurrentChallenge AS
 	
 );
 
+CREATE VIEW `halso_hub`.TrophiesNotEarned AS
+(
+	SELECT Users.Name AS User, Trophy.Name AS Thophy
+    FROM Trophy JOIN Users
+		ON (Users.Name, Trophy.Name) NOT IN (SELECT EarnedTrophy.userName, EarnedTrophy.trophyName FROM EarnedTrophy)
+	
+);
 
+CREATE VIEW `halso_hub`.TrophiesNotEarnedSum AS
+(
+	SELECT TrophiesNotEarned.User, TrophiesNotEarned.Thophy, ActivityRewards.activityName, ActivityRewards.totalNr, GREATEST( ActivityRewards.totalNr - IFNULL(ActivityCompleted.nrAllTime, 0), 0) AS nrLeft
+    FROM TrophiesNotEarned JOIN ActivityRewards
+		ON TrophiesNotEarned.Thophy = ActivityRewards.trophyName
+	LEFT JOIN ActivityCompleted
+		ON ActivityCompleted.activityName = ActivityRewards.activityName AND ActivityCompleted.userName = TrophiesNotEarned.User
+    
+);
+
+CREATE VIEW `halso_hub`.TrophiesNotEarnedTotalSumLeft AS
+(
+	SELECT TrophiesNotEarnedSum.User, TrophiesNotEarnedSum.Thophy, SUM(TrophiesNotEarnedSum.nrLeft) as totalLeft
+    FROM TrophiesNotEarnedSum 
+		
+    GROUP BY TrophiesNotEarnedSum.User, TrophiesNotEarnedSum.Thophy
+);
