@@ -12,32 +12,32 @@ namespace Halso_Hub
     /// <summary>
     /// Interface for the model (user) used by the presenter.
     /// </summary>
-    public interface IUser
+    interface IUser
     {
         string Username { get; }
-        Hashtable CurrentMood { get; }
-		CurrentActivity CurrentActivity { get; }
-        List<CompletedActivity> CompletedActivities { get; }
-        List<Trophy> Trophies { get; }
+        CurrentActivity CurrentActivity { get; }
         CurrentChallenge CurrentChallenge { get; }
         List<Challenge> CompletedChallenges { get; }
-        List<Challenge> GetRecommendedChallenges();
 
+        String GetActivityDescriptionQuery(String activityName);
+        String GetChallengeDescriptionQuery(String challengeName);
+        Activity GetActivityQuery(String currentActivityHover);
+        Challenge GetChallengeQuery(String currentChallengeHover);
+        List<string> ActiveChallenges();
+        List<string> RecommendedActivities();
+        List<Trophy> allTrophies();
 
-		void ChangeMood(String type, MoodType mood);
-		void ResetMood();
+        void AddMood(MoodType moodType);
+        void ResetMood();
         void SetCurrentActivity(Activity newActivity);
         void DropCurrentActivity();
-        List<Activity> GetRecommendedActivities();
-        List<Trophy> CompleteCurrentActivity(ActivityGrade grade, String comment);
+        List<string> GetRecommendedActivities();
+        List<Notification> CompleteCurrentActivity(int grade, String comment);
         int TotalPoints();
         int TotalGoldTrophies();
         int TotalSilverTrophies();
         int TotalBronzeTrophies();
         void SetCurrentChallenge(Challenge newChallenge);
-        void CompleteCurrentChallenge();
         void FailCurrentChallenge();
-        Activity findRecommendedActivityByName(string name);
-        Challenge findRecommendedActivityForChallenge(string name);
     }
 }
