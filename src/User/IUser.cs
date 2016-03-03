@@ -13,7 +13,7 @@ namespace Halso_Hub
     /// Interface for the model (user) used by the presenter.
     /// </summary>
     interface IUser
-    {
+    { //hej
         string Username { get; }
         CurrentActivity CurrentActivity { get; }
         CurrentChallenge CurrentChallenge { get; }

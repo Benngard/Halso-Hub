@@ -12,7 +12,7 @@ namespace Halso_Hub
     /// Is a user of the application.
     /// </summary>
     class User : IUser
-    {
+    { //hej
         public string Username { get; private set; }
 
         public HashSet<MoodType> CurrentMood { get; private set; }
