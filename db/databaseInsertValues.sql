@@ -142,16 +142,6 @@ VALUES ('Ola','Strength of an oxe');
 INSERT INTO EarnedTrophy
 VALUES ('Johan','Cat lover');
 
-/* USERMOOD */
-
-INSERT INTO UserMood
-VALUES ('Ola','Bored');
-
-INSERT INTO UserMood
-VALUES ('Mattias','Bored');
-
-INSERT INTO UserMood
-VALUES ('Johan','Stressed');
 
 /* CHALLENGEREWARDS */
 INSERT INTO ChallengeRewards

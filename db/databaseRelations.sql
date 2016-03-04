@@ -68,15 +68,6 @@ CREATE TABLE `halso_hub`.EarnedTrophy
 	FOREIGN KEY (trophyName) REFERENCES Trophy(name)
 );
 
-CREATE TABLE `halso_hub`.UserMood
-(
-	userName			varchar(255)	NOT NULL,
-	currentMoodType		varchar(255)	NOT NULL,
-	PRIMARY KEY (userName, currentMoodType),
-	FOREIGN KEY (userName) REFERENCES Users(name),
-	FOREIGN KEY (currentMoodType) REFERENCES Mood(type)
-);
-
 CREATE TABLE `halso_hub`.ChallengeRewards
 (
 	trophyName			varchar(255)	NOT NULL,

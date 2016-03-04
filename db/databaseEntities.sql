@@ -4,16 +4,13 @@ CREATE TABLE `halso_hub`.Activity
 	Description		text,
 	Points 			int				DEFAULT 0,
 	Time			int,
-	PRIMARY KEY (Name)
+	PRIMARY KEY (Name),
+    
+    CONSTRAINT positiveNr
+		CHECK (Points >= 0)
 );
 
 CREATE TABLE `halso_hub`.Mood
-(
-	Type			varchar(255)	NOT NULL,
-	PRIMARY KEY (Type)
-);
-
-CREATE TABLE `halso_hub`.CurrentMood
 (
 	Type			varchar(255)	NOT NULL,
 	PRIMARY KEY (Type)
