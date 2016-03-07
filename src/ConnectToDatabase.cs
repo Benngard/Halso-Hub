@@ -432,22 +432,7 @@ namespace Halso_Hub
         /// <returns></returns>
         public bool setCurrentChallenge(string username, string challenge)
         {
-            /*OpenConnection();
-            var EndTimeString = "";
-            string commandText = "SELECT EndTime FROM Challenge WHERE Name = @Challenge";
-            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
-            mySqlCommand.Parameters.AddWithValue("@Challenge", challenge);
-            MySqlDataReader reader = mySqlCommand.ExecuteReader();
-            while (reader.Read())
-            {
-                EndTimeString = reader.GetString(0);
-            }
-            CloseConnection();
-
-            string[] t = EndTimeString.Split(':');
-            var EndTimeChallenge = new TimeSpan(int.Parse(t[0]), int.Parse(t[1]), int.Parse(t[2]));
-            var timeSpan = TimeSpan.Compare(EndTimeChallenge, DateTime.Now.TimeOfDay);*/
-            if (TimeLeftForChallenge(challenge)/*timeSpan == 1*/)
+            if (TimeLeftForChallenge(challenge))
             {
                 OpenConnection();
                 string commandTextInsertIntoOnGoingChallenge = "INSERT INTO OnGoingChallenge VALUES ('" + username + "','" + challenge + "')";
@@ -640,6 +625,60 @@ namespace Halso_Hub
             mySqlCommand.Parameters.AddWithValue("@Username", username);
             MySqlDataReader reader = mySqlCommand.ExecuteReader();
             return reader.GetInt16(0);
+        }
+
+        /// <summary>
+        /// Method for getting a all recomended activities for the user dependent on the user´s mood.
+        /// </summary>
+        /// <param name="moods"></param>The user´s different moods. 
+        /// <returns></returns>A list with recommended activities for the user. 
+        public List<string> RecommendedActivities(List<MoodType> moods)
+        {
+            var allActivities = GetActivitiesQuery();
+            var activitiesForMoods = new List<string>();
+            var recommendedActivities = new List<string>();
+
+            for (int i = 0; i < moods.Count; i++)
+            {
+                OpenConnection();
+                string commandText = "SELECT COUNT activityName FROM GoodFor WHERE moodType = @MoodType";
+                MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
+                mySqlCommand.Parameters.AddWithValue("@MoodType", moods[i].ToString());
+                MySqlDataReader reader = mySqlCommand.ExecuteReader();
+                int numberOfActivities = reader.GetInt16(0);
+                CloseConnection();
+
+                OpenConnection();
+                string commandText1 = "SELECT activityName FROM GoodFor WHERE moodType = @MoodType";
+                MySqlCommand mySqlCommand1 = new MySqlCommand(commandText1, Connection);
+                mySqlCommand1.Parameters.AddWithValue("@MoodType", moods[i].ToString());
+                reader = mySqlCommand.ExecuteReader();
+                int k = 0;
+
+                if (reader.Read())
+                {
+                    while (k < numberOfActivities)
+                    {
+                        activitiesForMoods.Add(reader.GetString(k));
+                        k++;
+                    }
+                }
+                CloseConnection();
+            }
+
+            CloseConnection();
+
+            foreach (string activityString in allActivities)
+            {
+                foreach (string stringFromMood in activitiesForMoods)
+                {
+                    if (stringFromMood == activityString && !recommendedActivities.Contains(stringFromMood))
+                    {
+                        recommendedActivities.Add(stringFromMood);
+                    }
+                }
+            }
+            return recommendedActivities;
         }
 
         /// <summary>
