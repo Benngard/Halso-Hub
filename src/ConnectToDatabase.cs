@@ -568,6 +568,48 @@ namespace Halso_Hub
         }
 
         /// <summary>
+        /// Method for getting a all recomended activities for the user dependent on the user´s mood.
+        /// </summary>
+        /// <param name="moods"></param>The user´s different moods. 
+        /// <returns></returns>A list with recommended activities for the user. 
+        public List<string> RecommendedActivities(List<MoodType> moods)
+        {
+            var allActivities = GetActivitiesQuery();
+            var activitiesForMoods = new List<string>();
+            var recommendedActivities = new List<string>();
+
+            for (int i = 0; i < moods.Count; i++)
+            {
+                OpenConnection();
+                string commandText1 = "SELECT activityName FROM GoodFor WHERE moodType = @Moodtype";
+                MySqlCommand mySqlCommand1 = new MySqlCommand(commandText1, Connection);
+                mySqlCommand1.Parameters.AddWithValue("@Moodtype", moods[i].ToString());
+                MySqlDataReader reader = mySqlCommand1.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    activitiesForMoods.Add(reader.GetString(0));
+                }
+                CloseConnection();
+            }
+
+            CloseConnection();
+
+            foreach (string activityString in allActivities)
+            {
+                foreach (string stringFromMood in activitiesForMoods)
+                {
+                    if (stringFromMood == activityString && !recommendedActivities.Contains(stringFromMood))
+                    {
+                        recommendedActivities.Add(stringFromMood);
+                    }
+                }
+            }
+
+            return recommendedActivities;
+        }
+
+        /// <summary>
         /// Method for getting all gold trophies for a given user. 
         /// </summary>
         /// <param name="username"></param>Name of the user.
