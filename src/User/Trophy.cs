@@ -37,7 +37,7 @@ namespace Halso_Hub
 			Name = name;
 			Description = description;
 			Type = type;
-			Requirements = requirements;
+			//Requirements = requirements;
 		}
 	}
 }

@@ -12,7 +12,7 @@ CREATE VIEW `halso_hub`.UserTotalPoints AS
 
 CREATE VIEW `halso_hub`.UserTotalTrophies AS
 (
-	SELECT Users.Name, IFNULL( COUNT(Trophy.Name), 0) AS TotalPoints
+	SELECT Users.Name, IFNULL( COUNT(Trophy.Name), 0) AS TotalTrophies
 	FROM Trophy LEFT JOIN EarnedTrophy
 		ON EarnedTrophy.trophyName = Trophy.Name
     RIGHT JOIN Users
@@ -22,7 +22,7 @@ CREATE VIEW `halso_hub`.UserTotalTrophies AS
 
 CREATE VIEW `halso_hub`.UserTotalBronze AS
 (
-	SELECT Users.Name, IFNULL( COUNT(Trophy.Name), 0) AS TotalPoints
+	SELECT Users.Name, IFNULL( COUNT(Trophy.Name), 0) AS TotalTrophies
 	FROM Trophy LEFT JOIN EarnedTrophy
 		ON EarnedTrophy.trophyName = Trophy.Name AND Trophy.Quality = 'Bronze'
     RIGHT JOIN Users
@@ -33,7 +33,7 @@ CREATE VIEW `halso_hub`.UserTotalBronze AS
 
 CREATE VIEW `halso_hub`.UserTotalSilver AS
 (
-	SELECT Users.Name, IFNULL( COUNT(Trophy.Name), 0) AS TotalPoints
+	SELECT Users.Name, IFNULL( COUNT(Trophy.Name), 0) AS TotalTrophies
 	FROM Trophy LEFT JOIN EarnedTrophy
 		ON EarnedTrophy.trophyName = Trophy.Name AND Trophy.Quality = 'Silver'
     RIGHT JOIN Users
@@ -44,7 +44,7 @@ CREATE VIEW `halso_hub`.UserTotalSilver AS
 
 CREATE VIEW `halso_hub`.UserTotalGold AS
 (
-	SELECT Users.Name, IFNULL( COUNT(Trophy.Name), 0) AS TotalPoints
+	SELECT Users.Name, IFNULL( COUNT(Trophy.Name), 0) AS TotalTrophies
 	FROM Trophy LEFT JOIN EarnedTrophy
 		ON EarnedTrophy.trophyName = Trophy.Name AND Trophy.Quality = 'Gold'
     RIGHT JOIN Users

@@ -14,32 +14,69 @@ VALUES ('Daniel');
 
 /* MOOD */
 INSERT INTO Mood 
-VALUES ('Stressed');
+VALUES ('Very Sad');
+
+INSERT INTO Mood 
+VALUES ('Sad');
+
+INSERT INTO Mood 
+VALUES ('Happy');
+
+INSERT INTO Mood 
+VALUES ('Very Happy');
+
+INSERT INTO Mood 
+VALUES ('Very Tired');
 
 INSERT INTO Mood 
 VALUES ('Tired');
 
 INSERT INTO Mood 
-VALUES ('Square');
+VALUES ('Energetic');
 
 INSERT INTO Mood 
-VALUES ('Bored');
+VALUES ('Very Energetic');
+
+INSERT INTO Mood 
+VALUES ('Very Stressed');
+
+INSERT INTO Mood 
+VALUES ('Stressed');
+
+INSERT INTO Mood 
+VALUES ('Calm');
+
+INSERT INTO Mood 
+VALUES ('Very Calm');
+
+INSERT INTO Mood 
+VALUES ('Very Lonely');
+
+INSERT INTO Mood 
+VALUES ('Lonely');
+
+INSERT INTO Mood 
+VALUES ('Sociable');
+
+INSERT INTO Mood 
+VALUES ('Very Sociable');
+
 
 /* ACTIVITY */
 INSERT INTO Activity
-VALUES ('Limbo','How low can you go?','20','120');
+VALUES ('Limbo','How low can you go?','20','2');
 
 INSERT INTO Activity
-VALUES ('Pushups','Do 10 pushups!','20','60');
+VALUES ('Pushups','Do 10 pushups!','20','2');
 
 INSERT INTO Activity
-VALUES ('Situps','Do 15 situps!','25','60');
+VALUES ('Situps','Do 15 situps!','25','2');
 
 INSERT INTO Activity
-VALUES ('Fruit time','You either eat a banana or an appel, the choice is yours and yours only!','15','180');
+VALUES ('Fruit time','You either eat a banana or an appel, the choice is yours and yours only!','15','2');
 
 INSERT INTO Activity
-VALUES ('Cat video','Cheer up mate! Watch a cat video!','25','180');
+VALUES ('Cat video','Cheer up mate! Watch a cat video!','25','2');
 
 /* TROPHY */
 INSERT INTO Trophy
@@ -56,7 +93,10 @@ VALUES ('Training deluxe','You must love to exercise!','Gold');
 
 /* CHALLENGE */
 INSERT INTO Challenge
-VALUES ('Flexibility & Strength','Complete both Strength of an ox and Limbo Master to finish this challenge!','00:00:00','23:54:00');
+VALUES ('Flexibility & Strength','Complete both Strength of an ox and Limbo Master to finish this challenge!','00:00:00','23:59:59');
+
+INSERT INTO Challenge
+VALUES ('Limbo guru','Go low low low low','00:00:00','23:59:59');
 
 /* databaseRelations
 ------------------------------------*/
@@ -66,19 +106,25 @@ INSERT INTO GoodFor
 VALUES ('Tired','Fruit time');
 
 INSERT INTO GoodFor
+VALUES ('Very Tired','Fruit time');
+
+INSERT INTO GoodFor
+VALUES ('Very Stressed','Cat video');
+
+INSERT INTO GoodFor
 VALUES ('Stressed','Cat video');
 
 INSERT INTO GoodFor
-VALUES ('Bored','Pushups');
+VALUES ('Tired','Pushups');
 
 INSERT INTO GoodFor
-VALUES ('Bored','Situps');
+VALUES ('Very Tired','Situps');
 
 INSERT INTO GoodFor
-VALUES ('Square','Limbo');
+VALUES ('Very Sad','Limbo');
 
 /* ACTIVITYCOMPLETED */
-INSERT INTO ActivityCompleted
+/*INSERT INTO ActivityCompleted
 VALUES ('Ola','Pushups', 1, 0);
 
 INSERT INTO ActivityCompleted
@@ -97,13 +143,13 @@ INSERT INTO ActivityCompleted
 VALUES ('Johan','Cat video', 1, 0);
 
 INSERT INTO ActivityCompleted
-VALUES ('Daniel','Limbo', 2, 1);
+VALUES ('Daniel','Limbo', 2, 1);*/
 
 
 
 /* ONGOINGACTIVITY */
-INSERT INTO OnGoingActivity
-VALUES ('Johan','Limbo');
+/*INSERT INTO OnGoingActivity
+VALUES ('Johan','Limbo');*/
 
 /* ACTIVITYREWARDS */
 INSERT INTO ActivityRewards
@@ -113,7 +159,7 @@ INSERT INTO ActivityRewards
 VALUES ('Strength of an oxe','Situps', 2);
 
 INSERT INTO ActivityRewards
-VALUES ('Limbo master','Limbo', 1);
+VALUES ('Limbo master','Limbo', 2);
 
 INSERT INTO ActivityRewards
 VALUES ('Cat lover','Cat video', 2);
@@ -135,6 +181,9 @@ VALUES ('Flexibility & Strength','Pushups', 3);
 INSERT INTO ChallengeRequires
 VALUES ('Flexibility & Strength','Situps', 1);
 
+INSERT INTO ChallengeRequires
+VALUES ('Limbo guru','Limbo', 1);
+
 /* EARNEDTROPHY */
 INSERT INTO EarnedTrophy
 VALUES ('Ola','Strength of an oxe');
@@ -142,12 +191,15 @@ VALUES ('Ola','Strength of an oxe');
 INSERT INTO EarnedTrophy
 VALUES ('Johan','Cat lover');
 
+INSERT INTO EarnedTrophy
+VALUES ('Mattias','Cat lover');
+
 
 /* CHALLENGEREWARDS */
 INSERT INTO ChallengeRewards
 VALUES ('Training deluxe','Flexibility & Strength');
 
-/* ONGOINGCHALLENGE */
+/* ONGOINGCHALLENGE *//*
 INSERT INTO OnGoingChallenge
 VALUES ('Mattias','Flexibility & Strength');
 
@@ -155,5 +207,5 @@ INSERT INTO OnGoingChallenge
 VALUES ('Daniel','Flexibility & Strength');
 
 /* CHALLENGECOMPLETED */
-INSERT INTO ChallengeCompleted
-VALUES ('Ola','Flexibility & Strength');
+/*INSERT INTO ChallengeCompleted
+VALUES ('Ola','Flexibility & Strength');*/

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Halso_Hub.Main;
 
 /// <summary>
 /// Main class starting program
@@ -24,13 +25,12 @@ namespace Halso_Hub
                 MessageBox.Show("" + args[0]);
             }
 
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			MainForm MainForm = new MainForm();
-			User user = new User("testUser");
-			Presenter presenter = new Presenter(MainForm, user);
-			Application.Run(MainForm);
-
-		}
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            MainForm MainForm = new MainForm();
+            User user = new User("Mattias");
+            Presenter presenter = new Presenter(MainForm, user);
+            Application.Run(MainForm);
+        }
     }
 }

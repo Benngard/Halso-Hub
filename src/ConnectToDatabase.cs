@@ -38,7 +38,7 @@ namespace Halso_Hub
             //
             //----------------------------------------------------GLÖM INTE ATT ÄNDRA TILL DIN LOKALA DATABAS----------------------------------------------------:)
             //
-            string connstring = string.Format("Server=localhost; database={0}; UID=root; password=", DatabaseName);
+            string connstring = string.Format("Server=localhost; database={0}; UID=root; password=damp", DatabaseName);
             Connection = new MySqlConnection(connstring);
         }
 
@@ -71,11 +71,11 @@ namespace Halso_Hub
             var reader = mySqlCommand.ExecuteReader();
             List<string> moods = new List<string>();
 
-            int i = 0;
+
             while (reader.Read())
             {
-                moods.Add((String)reader.GetValue(i));
-                i++;
+                moods.Add((string)reader.GetValue(0));
+
             }
 
             CloseConnection();
@@ -102,21 +102,8 @@ namespace Halso_Hub
         /// <returns></returns>Returns the Challenge with the given name from param. 
         public Challenge GetChallengeQuery(String challenge)
         {
-            OpenConnection();
-            string commandTextGetActivitiesNames = "SELECT activityName FROM ChallengeRequires WHERE challengeName = @ChallengeName";
-            var mySqlCommand = new MySqlCommand(commandTextGetActivitiesNames, Connection);
-            mySqlCommand.Parameters.AddWithValue("@ChallengeName", challenge);
-            var reader = mySqlCommand.ExecuteReader();
-            List<string> activitiesName = new List<string>();
 
-            int i = 0;
-            while (reader.Read())
-            {
-                activitiesName.Add(reader.GetString(0));
-                i++;
-            }
-
-            CloseConnection();
+			List<string> activitiesName = ActivitiesForChallenge(challenge);
 
             List<Activity> activities = new List<Activity>();
 
@@ -146,6 +133,25 @@ namespace Halso_Hub
             CloseConnection();
             return a;
         }
+
+		public List<string> ActivitiesForChallenge(string challenge)
+		{
+			OpenConnection();
+			string commandTextGetActivitiesNames = "SELECT activityName FROM ChallengeRequires WHERE challengeName = @ChallengeName";
+			var mySqlCommand = new MySqlCommand(commandTextGetActivitiesNames, Connection);
+			mySqlCommand.Parameters.AddWithValue("@ChallengeName", challenge);
+			var reader = mySqlCommand.ExecuteReader();
+			List<string> activitiesNames = new List<string>();
+
+			while (reader.Read())
+			{
+				activitiesNames.Add(reader.GetString(0));
+			}
+
+			CloseConnection();
+
+			return activitiesNames;
+		}
 
         /// <summary>
         /// Method for getting all the Activities from the database. 
@@ -322,55 +328,85 @@ namespace Halso_Hub
             return listWithChallenges;
         }
 
+		/// <summary>
+		/// Complete an activity by updating its values in the database
+		/// </summary>
+		/// <param name="username">Name of user</param>
+		/// <param name="nameOfActivity">Name of activity</param>
+		/// <param name="activityInChallenge">If nameOfActivity is in an activity in current challenge</param>
+		public void CompleteActivity(string username, string nameOfActivity)
+		{
+			List<Activity> activitiesLeft = getGetChallengeActivitiesLeftInCurrentChallenge(username);
+			bool activityInChallenge = false;
+			foreach (Activity activity in activitiesLeft)
+			{
+				if (activity.Name == nameOfActivity)
+				{
+					activityInChallenge = true;
+					break;
+				}
+			}
+
+			OpenConnection();
+			string commandTextGetActivityCompleted = "SELECT nrAllTime,nrToday FROM ActivityCompleted WHERE userName = '" + username + "' AND activityName = '" + nameOfActivity + "'";
+			MySqlCommand mySqlCommand = new MySqlCommand(commandTextGetActivityCompleted, Connection);
+			MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+			if (reader.Read())
+			{
+				int a = reader.GetInt16(0);
+				int b = reader.GetInt16(1);
+				CloseConnection();
+
+				string commandTextUpdateActivityCompleted = "UPDATE ActivityCompleted SET nrAllTime = @a, nrToday = @b WHERE userName = @username AND activityName = @activityName";
+				MySqlCommand updateCommand = new MySqlCommand(commandTextUpdateActivityCompleted, Connection);
+				updateCommand.Parameters.AddWithValue("@a", a+1);
+
+				if (activityInChallenge)
+				{
+					updateCommand.Parameters.AddWithValue("@b", b+1);
+				}
+				else
+				{
+					updateCommand.Parameters.AddWithValue("@b", b);
+				}
+				updateCommand.Parameters.AddWithValue("@username", username);
+				updateCommand.Parameters.AddWithValue("@activityName", nameOfActivity);
+
+				OpenConnection();
+				updateCommand.ExecuteNonQuery();
+			}
+			else
+			{
+				CloseConnection();
+				Debug.WriteLine("No user found in ActivityCompleted");
+				
+				string commandTextInsertIntoActivityCompleted = "INSERT INTO ActivityCompleted VALUES (@Username, @ActivityName ,1,@nrToday,0,'')";
+				MySqlCommand insertCommand = new MySqlCommand(commandTextInsertIntoActivityCompleted, Connection);
+				insertCommand.Parameters.AddWithValue("@Username", username);
+				insertCommand.Parameters.AddWithValue("@ActivityName", nameOfActivity);
+				if (activityInChallenge)
+				{
+					insertCommand.Parameters.AddWithValue("@nrToday", 1);
+				}
+				else
+				{
+					insertCommand.Parameters.AddWithValue("@nrToday", 0);
+				}
+				OpenConnection();
+				insertCommand.ExecuteNonQuery();
+				
+			}
+			CloseConnection();
+		}
+
         /// <summary>
-        /// Method for getting a trophy.
+        /// Get trophies earned from resently completed activity.
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="nameOfActivity"></param>
+        /// <param name="username">Name of user</param>
         /// <returns></returns>
-
-        public List<Trophy> getTrophy(string username, string nameOfActivity)
+        public List<Trophy> getTrophiesEarnedAfterActivity(string username)
         {
-
-            string commandTextInsertIntoActivityCompleted1 = "INSERT INTO ActivityCompleted VALUES ('" + username + "','" + nameOfActivity + "',1,1)";
-
-            OpenConnection();
-            string commandTextGetActivityCompleted = "SELECT nrAllTime,nrToday FROM ActivityCompleted WHERE userName = '" + username + "' AND activityName = '" + nameOfActivity + "'";
-            MySqlCommand mySqlCommand4 = new MySqlCommand(commandTextGetActivityCompleted, Connection);
-            MySqlDataReader reader4 = mySqlCommand4.ExecuteReader();
-            var list = new List<int>();
-            bool update = false;
-
-            if (reader4.Read())
-            {
-                list.Add(reader4.GetInt16(0));
-                list.Add(reader4.GetInt16(1));
-                update = true;
-                Debug.WriteLine("" + reader4.GetInt16(0) + " " + reader4.GetInt16(1));
-            }
-            else
-            {
-                CloseConnection();
-
-                OpenConnection();
-                MySqlCommand mySqlCommand6 = new MySqlCommand(commandTextInsertIntoActivityCompleted1, Connection);
-                MySqlDataReader reader6 = mySqlCommand6.ExecuteReader();
-            }
-            CloseConnection();
-
-            if (update)
-            {
-                OpenConnection();
-                string commandTextUpdateActivityCompleted = "UPDATE ActivityCompleted SET nrAllTime = @a, nrToday = @b WHERE userName = @c AND activityName = @d";
-                MySqlCommand mySqlCommand5 = new MySqlCommand(commandTextUpdateActivityCompleted, Connection);
-                mySqlCommand5.Parameters.AddWithValue("@a", list[0] + 1);
-                mySqlCommand5.Parameters.AddWithValue("@b", list[1] + 1);
-                mySqlCommand5.Parameters.AddWithValue("@c", username);
-                mySqlCommand5.Parameters.AddWithValue("@d", nameOfActivity);
-                MySqlDataReader reader5 = mySqlCommand5.ExecuteReader();
-                CloseConnection();
-            }
-
             OpenConnection();
             string commandText = "SELECT Thophy FROM TrophiesNotEarnedTotalSumLeft WHERE User = @Username AND totalLeft = 0";
             MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
@@ -387,7 +423,6 @@ namespace Halso_Hub
             if (StringListWithTrophyNames.Count == 0)
             {
                 CloseConnection();
-                Debug.WriteLine("getTrophy returning new List<Trophy>()");
                 return new List<Trophy>();
             }
             CloseConnection();
@@ -419,8 +454,6 @@ namespace Halso_Hub
                 i++;
                 CloseConnection();
             }
-            CloseConnection();
-            Debug.WriteLine("getTrophy returning trophyList, NEW TROPHY/TROPHIES");
             return trophyList;
         }
 
@@ -432,6 +465,7 @@ namespace Halso_Hub
         /// <returns></returns>
         public bool setCurrentChallenge(string username, string challenge)
         {
+
             if (TimeLeftForChallenge(challenge))
             {
                 OpenConnection();
@@ -446,6 +480,30 @@ namespace Halso_Hub
                 return false;
             }
         }
+
+		/// <summary>
+		/// Get the current challenge for a user
+		/// </summary>
+		/// <param name="userName">The users name</param>
+		/// <returns></returns>
+		public string GetCurrentChallenge(string userName)
+		{
+			string challengeName = "";
+
+			OpenConnection();
+			string commandGetChallengeName = "SELECT challengeName FROM OnGoingChallenge WHERE userName = @UserName";
+			MySqlCommand mySqlCommand = new MySqlCommand(commandGetChallengeName, Connection);
+			mySqlCommand.Parameters.AddWithValue("@UserName", userName);
+			MySqlDataReader reader = mySqlCommand.ExecuteReader();
+			
+
+			if (reader.Read())
+			{
+				challengeName = reader.GetString(0);
+			}
+			CloseConnection();
+			return challengeName;
+		}
 
         /// <summary>
         /// Method for checking if the current Challenge is still operative. 
@@ -528,7 +586,7 @@ namespace Halso_Hub
         /// </summary>
         /// <param name="username"></param>The user who may have completed the Challenge.
         /// <param name="challenge"></param>Name of the Challenge.
-        /// <returns></returns>
+        /// <returns>True if completed, false otherwise</returns>
         public bool challengeCompleted(string username, string challenge)
         {
             OpenConnection();
@@ -567,6 +625,227 @@ namespace Halso_Hub
             return ListWithAllTrophies;
         }
 
+		/// <summary>
+		/// Get all trophies earned by a user
+		/// </summary>
+		/// <param name="userName"></param>
+		/// <returns>List of all earned trophies</returns>
+		public List<Trophy> EarnedTrophies(string userName)
+		{
+			OpenConnection();
+			string commandTextGetTrophyName = "SELECT trophyName FROM EarnedTrophy WHERE userName = @UserName";
+			MySqlCommand mySqlCommand = new MySqlCommand(commandTextGetTrophyName, Connection);
+			mySqlCommand.Parameters.AddWithValue("@UserName", userName);
+			MySqlDataReader reader = mySqlCommand.ExecuteReader();
+			var ListWithAllTrophyNames = new List<string>();
+
+			while (reader.Read())
+			{
+				ListWithAllTrophyNames.Add( reader.GetString(0) );
+			}
+			CloseConnection();
+
+			var ListWithAllTrophies = new List<Trophy>();
+
+			foreach (string trophyName in ListWithAllTrophyNames)
+			{
+				OpenConnection();
+				string commandTextGetTrophy = "SELECT * FROM Trophy WHERE Name = @TrophyName";
+				MySqlCommand mySqlCommand2 = new MySqlCommand(commandTextGetTrophy, Connection);
+				mySqlCommand2.Parameters.AddWithValue("@TrophyName", trophyName);
+				MySqlDataReader reader2 = mySqlCommand2.ExecuteReader();
+
+				if (reader2.Read())
+				{
+					ListWithAllTrophies.Add(new Trophy("" + reader2.GetString(0), "" + reader2.GetString(1), "" + reader2.GetString(2)));
+				}
+				CloseConnection();
+			}
+			
+			return ListWithAllTrophies;
+		}
+
+		/// <summary>
+		/// Get all trophies not yet earned by a user
+		/// </summary>
+		/// <param name="userName"></param>
+		/// <returns>List of all trophies earned not yet</returns>
+		public List<Trophy> NotEarnedTrophies(string userName)
+		{
+			OpenConnection();
+			string commandTextGetTrophyName = "SELECT Thophy FROM TrophiesNotEarned WHERE User = @UserName";
+			MySqlCommand mySqlCommand = new MySqlCommand(commandTextGetTrophyName, Connection);
+			mySqlCommand.Parameters.AddWithValue("@UserName", userName);
+			MySqlDataReader reader = mySqlCommand.ExecuteReader();
+			var ListWithAllTrophyNames = new List<string>();
+
+			while (reader.Read())
+			{
+				ListWithAllTrophyNames.Add(reader.GetString(0));
+			}
+			CloseConnection();
+
+			var ListWithAllTrophies = new List<Trophy>();
+
+			foreach (string trophyName in ListWithAllTrophyNames)
+			{
+				OpenConnection();
+				string commandTextGetTrophy = "SELECT * FROM Trophy WHERE Name = @TrophyName";
+				MySqlCommand mySqlCommand2 = new MySqlCommand(commandTextGetTrophy, Connection);
+				mySqlCommand2.Parameters.AddWithValue("@TrophyName", trophyName);
+				MySqlDataReader reader2 = mySqlCommand2.ExecuteReader();
+
+				if (reader2.Read())
+				{
+					ListWithAllTrophies.Add(new Trophy("" + reader2.GetString(0), "" + reader2.GetString(1), "" + reader2.GetString(2)));
+				}
+				CloseConnection();
+			}
+
+			return ListWithAllTrophies;
+		}
+
+		/// <summary>
+		/// Method for getting all gold trophies for a given user. 
+		/// </summary>
+		/// <param name="username"></param>Name of the user.
+		/// <returns></returns>
+		public int GoldTrophies(String username)
+        {
+			int total = 0; 
+
+			OpenConnection();
+            string commandText = "SELECT TotalTrophies FROM UserTotalGold WHERE Name = @Username";
+            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
+            mySqlCommand.Parameters.AddWithValue("@Username", username);
+            MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+			if(reader.Read())
+			{
+				total = reader.GetInt16(0);
+			}
+			CloseConnection();
+			return total;
+		}
+
+        /// <summary>
+        /// Method for getting all silver trophies for a given user.  
+        /// </summary>
+        /// <param name="username"></param>Name of the user.
+        /// <returns></returns>
+        public int SilverTrophies(String username)
+        {
+			int total = 0;
+
+			OpenConnection();
+            string commandText = "SELECT TotalTrophies FROM UserTotalSilver WHERE Name = @Username";
+            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
+            mySqlCommand.Parameters.AddWithValue("@Username", username);
+            MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+			if (reader.Read())
+			{
+				total = reader.GetInt16(0);
+			}
+			CloseConnection();
+			return total;
+		}
+
+        /// <summary>
+        /// Method for getting all bronze trophies for a given user. 
+        /// </summary>
+        /// <param name="username"></param>Name of the user.
+        /// <returns></returns>
+        public int BronzeTrophies(String username)
+        {
+			int total = 0;
+
+			OpenConnection();
+            string commandText = "SELECT TotalTrophies FROM UserTotalBronze WHERE Name = @Username";
+            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
+            mySqlCommand.Parameters.AddWithValue("@Username", username);
+            MySqlDataReader reader = mySqlCommand.ExecuteReader();
+
+			if (reader.Read())
+			{
+				total = reader.GetInt16(0);
+			}
+			CloseConnection();
+			return total;
+		}
+
+        /// <summary>
+        ///  Method for getting all points for a given user. 
+        /// </summary>
+        /// <param name="username"></param>Name of the user.
+        /// <returns></returns>
+        public int TotalPoints(String username)
+        {
+			int points = 0;
+
+            OpenConnection();
+            string commandText = "SELECT TotalPoints FROM UserTotalPoints WHERE Name = @Username";
+            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
+            mySqlCommand.Parameters.AddWithValue("@Username", username);
+            MySqlDataReader reader = mySqlCommand.ExecuteReader();
+			if (reader.Read())
+			{
+				points = reader.GetInt16(0);
+			}
+			CloseConnection();
+			return points;
+		}
+
+        /// <summary>
+        /// Method for getting all the Activities left for a Challenge from the database. 
+        /// </summary>
+        /// <returns></returns>A list with all Activities.
+        public List<Activity> getGetChallengeActivitiesLeftInCurrentChallenge(string username)
+        {
+            OpenConnection();
+            string commandText = "SELECT activityName FROM ChallengeActivitiesLeftInCurrentChallenge WHERE userName = @Username AND nrLeft > 0";
+            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
+            mySqlCommand.Parameters.AddWithValue("@Username", username);
+            MySqlDataReader reader = mySqlCommand.ExecuteReader();
+            var ActivityList = new List<Activity>();
+            var NamesOfChallenges = new List<string>();
+
+            while (reader.Read())
+            {
+                NamesOfChallenges.Add(reader.GetString(0));
+            }
+            CloseConnection();
+
+            foreach (string s in NamesOfChallenges)
+            {
+                ActivityList.Add(GetActivityQuery(s));
+            }
+
+            foreach (Activity a in ActivityList)
+            {
+                Debug.WriteLine("Name of activity: " + a.Name);
+            }
+
+            CloseConnection();
+            return ActivityList;
+        }
+
+
+        /// <summary>
+        /// Closing the connection to the database.
+        /// </summary>
+        public void CloseConnection()
+        {
+            Connection.Close();
+        }
+
+        /// <summary>
+        /// Opening the connection to the database.
+        /// </summary>
+        public void OpenConnection()
+        {
+            Connection.Open();
+        }
         /// <summary>
         /// Method for getting a all recomended activities for the user dependent on the user´s mood.
         /// </summary>
@@ -609,134 +888,44 @@ namespace Halso_Hub
             return recommendedActivities;
         }
 
-        /// <summary>
-        /// Method for getting all gold trophies for a given user. 
-        /// </summary>
-        /// <param name="username"></param>Name of the user.
-        /// <returns></returns>
-        public int GoldTrophies(String username)
+
+		public void DropCurrentChallenge(string username, string challenge)
+		{
+			string resetCommandText = "UPDATE ActivityCompleted SET nrToday = 0 WHERE userName = @UserName AND activityName = @ActivityName";
+			MySqlCommand resetCommand = new MySqlCommand(resetCommandText, Connection);
+			resetCommand.Parameters.AddWithValue("@Username", username);
+			resetCommand.Parameters.AddWithValue("@ActivityName", "");
+			Debug.WriteLine("Try to reset " + GetCurrentChallenge(username));
+			List<string> activities = ActivitiesForChallenge(challenge);
+
+			OpenConnection();
+			foreach(String activity in activities)
+			{
+				resetCommand.Parameters["@ActivityName"].Value = activity;
+				Debug.WriteLine("Resetting activity: "+activity);
+				resetCommand.ExecuteNonQuery();
+			}
+			CloseConnection();
+
+			string deleteCommandText = "DELETE FROM OnGoingChallenge WHERE userName = @Username";
+			OpenConnection();
+			MySqlCommand deleteCommand = new MySqlCommand(deleteCommandText, Connection);
+			deleteCommand.Parameters.AddWithValue("@Username", username);
+			MySqlDataReader reader = deleteCommand.ExecuteReader();
+			CloseConnection();
+		}
+
+        public void SubmitComment(int grade, string comment, string username, string nameOfActivity)
         {
             OpenConnection();
-            string commandText = "SELECT * FROM UserTotalGold WHERE User = @Username";
-            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
-            mySqlCommand.Parameters.AddWithValue("@Username", username);
-            MySqlDataReader reader = mySqlCommand.ExecuteReader();
-            return reader.GetInt16(0);
-        }
-
-        /// <summary>
-        /// Method for getting all silver trophies for a given user.  
-        /// </summary>
-        /// <param name="username"></param>Name of the user.
-        /// <returns></returns>
-        public int SilverTrophies(String username)
-        {
-            OpenConnection();
-            string commandText = "SELECT * FROM UserTotalSilver WHERE User = @Username";
-            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
-            mySqlCommand.Parameters.AddWithValue("@Username", username);
-            MySqlDataReader reader = mySqlCommand.ExecuteReader();
-            return reader.GetInt16(0);
-        }
-
-        /// <summary>
-        /// Method for getting all bronze trophies for a given user. 
-        /// </summary>
-        /// <param name="username"></param>Name of the user.
-        /// <returns></returns>
-        public int BronzeTrophies(String username)
-        {
-            OpenConnection();
-            string commandText = "SELECT * FROM UserTotalBronze WHERE User = @Username";
-            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
-            mySqlCommand.Parameters.AddWithValue("@Username", username);
-            MySqlDataReader reader = mySqlCommand.ExecuteReader();
-            return reader.GetInt16(0);
-        }
-
-        /// <summary>
-        ///  Method for getting all points for a given user. 
-        /// </summary>
-        /// <param name="username"></param>Name of the user.
-        /// <returns></returns>
-        public int TotalPoints(String username)
-        {
-            OpenConnection();
-            string commandText = "SELECT * FROM UserTotalPoints WHERE User = @Username";
-            MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
-            mySqlCommand.Parameters.AddWithValue("@Username", username);
-            MySqlDataReader reader = mySqlCommand.ExecuteReader();
-            return reader.GetInt16(0);
-        }
-
-        /// <summary>
-        /// Method for getting a all recomended activities for the user dependent on the user´s mood.
-        /// </summary>
-        /// <param name="moods"></param>The user´s different moods. 
-        /// <returns></returns>A list with recommended activities for the user. 
-        public List<string> RecommendedActivities(List<MoodType> moods)
-        {
-            var allActivities = GetActivitiesQuery();
-            var activitiesForMoods = new List<string>();
-            var recommendedActivities = new List<string>();
-
-            for (int i = 0; i < moods.Count; i++)
-            {
-                OpenConnection();
-                string commandText = "SELECT COUNT activityName FROM GoodFor WHERE moodType = @MoodType";
-                MySqlCommand mySqlCommand = new MySqlCommand(commandText, Connection);
-                mySqlCommand.Parameters.AddWithValue("@MoodType", moods[i].ToString());
-                MySqlDataReader reader = mySqlCommand.ExecuteReader();
-                int numberOfActivities = reader.GetInt16(0);
-                CloseConnection();
-
-                OpenConnection();
-                string commandText1 = "SELECT activityName FROM GoodFor WHERE moodType = @MoodType";
-                MySqlCommand mySqlCommand1 = new MySqlCommand(commandText1, Connection);
-                mySqlCommand1.Parameters.AddWithValue("@MoodType", moods[i].ToString());
-                reader = mySqlCommand.ExecuteReader();
-                int k = 0;
-
-                if (reader.Read())
-                {
-                    while (k < numberOfActivities)
-                    {
-                        activitiesForMoods.Add(reader.GetString(k));
-                        k++;
-                    }
-                }
-                CloseConnection();
-            }
-
+            string commandTextUpdateActivityCompleted = "UPDATE ActivityCompleted SET grade = @a, feedback = @b WHERE userName = @c AND activityName = @d";
+            MySqlCommand mySqlCommand5 = new MySqlCommand(commandTextUpdateActivityCompleted, Connection);
+            mySqlCommand5.Parameters.AddWithValue("@a", grade);
+            mySqlCommand5.Parameters.AddWithValue("@b", comment);
+            mySqlCommand5.Parameters.AddWithValue("@c", username);
+            mySqlCommand5.Parameters.AddWithValue("@d", nameOfActivity);
+            var affectedRows = mySqlCommand5.ExecuteNonQuery();
             CloseConnection();
-
-            foreach (string activityString in allActivities)
-            {
-                foreach (string stringFromMood in activitiesForMoods)
-                {
-                    if (stringFromMood == activityString && !recommendedActivities.Contains(stringFromMood))
-                    {
-                        recommendedActivities.Add(stringFromMood);
-                    }
-                }
-            }
-            return recommendedActivities;
-        }
-
-        /// <summary>
-        /// Closing the connection to the database.
-        /// </summary>
-        public void CloseConnection()
-        {
-            Connection.Close();
-        }
-
-        /// <summary>
-        /// Opening the connection to the database.
-        /// </summary>
-        public void OpenConnection()
-        {
-            Connection.Open();
         }
     }
 }

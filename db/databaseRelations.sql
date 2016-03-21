@@ -13,6 +13,8 @@ CREATE TABLE `halso_hub`.ActivityCompleted
 	activityName		varchar(255)	NOT NULL,
     nrAllTime			int,
     nrToday				int,
+    grade				int,
+    feedback			text,
 	PRIMARY KEY (userName, activityName),
 	FOREIGN KEY (userName) REFERENCES Users(name),
 	FOREIGN KEY (activityName) REFERENCES Activity(name),
